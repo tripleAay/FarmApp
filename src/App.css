@@ -1,0 +1,58 @@
+/* App.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for text shadow and animations */
+.text-shadow-lg {
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-400 {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Splash effect for buttons */
+.splash-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.splash-button::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3); /* Light splash color */
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease; /* Slow splash effect */
+  z-index: 0;
+}
+
+.splash-button:active::after {
+  width: 200px;
+  height: 200px;
+}
+
+/* Ensure mobile view is hidden on desktop */
+@media (min-width: 768px) {
+  .md:hidden {
+    display: none;
+  }
+}
