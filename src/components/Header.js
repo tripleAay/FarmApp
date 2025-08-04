@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'react-router-dom'; // Added Link
 
 export default function Header() {
   return (
@@ -36,8 +37,18 @@ export default function Header() {
               </svg>
             </button>
           </div>
-          <button className="border border-white rounded px-3 py-1 hover:bg-green-500">Login</button>
-          <button className="bg-white text-green-700 rounded px-3 py-1 hover:bg-green-200">Register</button>
+          <Link
+            to="/login"
+            className="border border-white rounded px-3 py-1 hover:bg-green-500 text-white"
+          >
+            Login
+          </Link>
+          <Link
+            to="/getstarted"
+            className="bg-white text-green-700 rounded px-3 py-1 hover:bg-green-200"
+          >
+            Register
+          </Link>
         </div>
 
         {/* Mobile nav (toggle can be added later) */}

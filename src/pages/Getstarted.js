@@ -9,6 +9,14 @@ const GetStarted = () => {
     navigate('/');
   };
 
+  const handleFarmerClick = () => {
+    navigate('/farmer');
+  };
+
+  const handleFoodieClick = () => {
+    navigate('/foodie');
+  };
+
   return (
     <div
       className="min-h-screen bg-cover bg-center relative"
@@ -32,10 +40,16 @@ const GetStarted = () => {
                 Let us tailor your experience by identifying your role—connect with Nigeria’s finest farmers or savor the freshest produce.
               </p>
               <div className="space-y-6">
-                <button className="splash-button w-full bg-yellow-500 text-white px-8 py-4 rounded-xl font-semibold text-xl hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <button
+                  className="splash-button w-full bg-yellow-500 text-white px-8 py-4 rounded-xl font-semibold text-xl hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  onClick={handleFarmerClick}
+                >
                   I’m a Farmer
                 </button>
-                <button className="splash-button w-full bg-green-500 text-white px-8 py-4 rounded-xl font-semibold text-xl hover:bg-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <button
+                  className="splash-button w-full bg-green-500 text-white px-8 py-4 rounded-xl font-semibold text-xl hover:bg-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  onClick={handleFoodieClick}
+                >
                   I’m a Foodie
                 </button>
               </div>
@@ -75,7 +89,10 @@ const GetStarted = () => {
           {/* Selection Cards */}
           <div className="flex flex-col space-y-6 mb-8">
             {/* Farmer Card */}
-            <div className="bg-gradient-to-br from-yellow-200 to-orange-100 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+            <div
+              className="bg-gradient-to-br from-yellow-200 to-orange-100 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+              onClick={handleFarmerClick}
+            >
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center">
                   <svg
@@ -94,7 +111,10 @@ const GetStarted = () => {
             </div>
 
             {/* Foodie Card */}
-            <div className="bg-gradient-to-br from-green-200 to-lime-100 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+            <div
+              className="bg-gradient-to-br from-green-200 to-lime-100 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+              onClick={handleFoodieClick}
+            >
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 bg-green-400 rounded-full flex items-center justify-center">
                   <svg

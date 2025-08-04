@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import livestock from '../assets/images/annie-spratt-2INKkSrEmc8-unsplash.jpg';
 import fish from '../assets/images/gregor-moser-QGIJUqnEpCY-unsplash.jpg';
 import corn from '../assets/images/shraddha-kulkarni-BkaTsvOwa-4-unsplash.jpg';
@@ -11,14 +12,25 @@ const Gateway = () => {
         {/* Left Section - Text Content */}
         <div className="w-full md:w-1/2 p-6 md:p-8 lg:p-10 text-center md:text-left space-y-6">
           <h1 className="text-4xl md:text-5xl font-extrabold text-green-900 mb-2 leading-tight">
-            Are You a Farmer?
+            Join FarmProduceMart
           </h1>
           <p className="text-gray-700 text-lg md:text-xl leading-relaxed">
-            Every new member strengthens our marketplace, broadening our community of buyers and expanding opportunities. Join us to embark on a journey toward shared success and let us support your growth.
+            Every new member strengthens our marketplace, connecting farmers and foodies for shared success. Choose your role to start your journey today.
           </p>
-          <button className="bg-yellow-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-md">
-            Sign up for Free Today →
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            <Link
+              to="/farmer"
+              className="bg-yellow-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-md"
+            >
+              I’m a Farmer
+            </Link>
+            <Link
+              to="/foodie"
+              className="bg-green-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-green-600 transition-all duration-300 transform hover:scale-105 shadow-md"
+            >
+              I’m a Foodie
+            </Link>
+          </div>
         </div>
 
         {/* Right Section - Image and Icons */}
