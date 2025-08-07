@@ -4,6 +4,7 @@ import DashHead from '../components/DashHead';
 import UserHead from '../components/userHead';
 import FeaturedProducts from '../components/FeaturedProducts';
 import UserOrder from '../components/userOrder';
+import BottomNav from '../components/ButtomNav';
 
 const UserDashboard = () => {
   // Placeholder data (replace with API calls if needed)
@@ -20,6 +21,7 @@ const UserDashboard = () => {
       <UserHead/>
       <FeaturedProducts/>
       <UserOrder/>
+      <BottomNav/>
 
       
     </div>

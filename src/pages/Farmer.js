@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
+import { motion } from 'framer-motion';
 
 const Farmer = () => {
   const [formData, setFormData] = useState({
@@ -14,10 +15,10 @@ const Farmer = () => {
     profilePicture: null,
     verificationDocs: null,
   });
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Expanded crop options
   const cropOptions = [
     { value: 'maize', label: 'Maize' },
     { value: 'yam', label: 'Yam' },
@@ -74,15 +75,13 @@ const Farmer = () => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('fullName', formData.fullName);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('password', formData.password);
-      formDataToSend.append('phoneNumber', formData.phoneNumber);
-      formDataToSend.append('farmName', formData.farmName);
-      formDataToSend.append('farmLocation', formData.farmLocation);
-      formDataToSend.append('crops', JSON.stringify(formData.crops));
-      if (formData.profilePicture) formDataToSend.append('profilePicture', formData.profilePicture);
-      if (formData.verificationDocs) formDataToSend.append('verificationDocs', formData.verificationDocs);
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === 'crops') {
+          formDataToSend.append(key, JSON.stringify(value));
+        } else if (value) {
+          formDataToSend.append(key, value);
+        }
+      });
 
       const response = await fetch('http://localhost:3000/api/farmer-signup', {
         method: 'POST',
@@ -113,159 +112,124 @@ const Farmer = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-8"
+      className="min-h-screen flex items-center justify-center p-4 md:p-8"
       style={{
         background: 'linear-gradient(90deg, rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 0.57) 64%, rgba(237, 221, 83, 1) 100%)',
       }}
     >
-      <div className="container max-w-4xl mx-auto flex flex-col md:flex-row bg-white rounded-xl shadow-2xl overflow-hidden transform transition-all duration-500 hover:shadow-3xl">
-        {/* Left Child: Welcome Section */}
-        <div className="md:w-1/2 bg-green-800 text-white p-8 flex flex-col justify-center items-center">
-          <h2 className="text-4xl font-bold mb-4 text-center text-shadow">Grow with Us!</h2>
-          <p className="text-lg mb-6 text-center text-shadow">
-            Join our vibrant farming community and showcase your crops to the world. Sign up to start your journey!
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+        className="w-full max-w-6xl mx-auto flex flex-col md:flex-row backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden"
+      >
+        {/* Left - Welcome */}
+        <motion.div
+          initial={{ scale: 0.9 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="md:w-1/2 bg-green-900 text-white p-8 flex flex-col justify-center items-center text-center"
+        >
+          <h2 className="text-4xl font-bold mb-4">Grow with Us 🌿</h2>
+          <p className="text-lg mb-6">
+            Join our vibrant farming community and showcase your crops to the world.
           </p>
           <img
-            src="https://images.unsplash.com/photo-1492496913980-501348b61469?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0"
-            alt="Farm Landscape"
-            className="w-32 h-32 rounded-full object-cover shadow-md mb-4 animate-pulse"
+            src="https://images.unsplash.com/photo-1492496913980-501348b61469?q=80&w=387"
+            alt="Farm"
+            className="w-36 h-36 rounded-full object-cover shadow-md animate-pulse mb-4"
           />
           <Link
             to="/"
-            className="text-green-100 hover:text-white font-semibold text-lg transition-colors duration-300 hover:underline"
+            className="text-green-100 hover:underline hover:text-white transition"
           >
-            Back to Home
+            ← Back to Home
           </Link>
-        </div>
+        </motion.div>
 
-        {/* Right Child: Form Section */}
-        <div className="md:w-1/2 p-8 bg-white bg-opacity-90 max-h-[calc(100vh-150px)] overflow-y-auto">
-          <h2 className="text-3xl font-bold mb-6 text-center text-green-900 text-shadow">Join Our Farming Community</h2>
-          {error && <p className="text-red-500 mb-4 text-center font-semibold bg-white bg-opacity-80 p-2 rounded">{error}</p>}
+        {/* Right - Form */}
+        <div className="md:w-1/2 p-6 md:p-8 bg-white bg-opacity-90">
+          <h2 className="text-3xl font-bold text-center mb-6 text-green-800">Farmer Registration</h2>
+
+          {error && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="bg-red-100 text-red-700 p-3 rounded mb-4 text-center"
+            >
+              {error}
+            </motion.p>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
+            {[
+              { name: 'fullName', type: 'text', placeholder: 'e.g. John Adebayo' },
+              { name: 'email', type: 'email', placeholder: 'e.g. john@example.com' },
+              { name: 'password', type: 'password', placeholder: 'Choose a strong password' },
+              { name: 'phoneNumber', type: 'text', placeholder: 'e.g. +234 123 456 7890' },
+              { name: 'farmName', type: 'text', placeholder: 'e.g. Green Valley Farm' },
+              { name: 'farmLocation', type: 'text', placeholder: 'e.g. Ogun State, Nigeria' },
+            ].map((field) => (
+              <div key={field.name}>
+                <label className="block text-sm font-medium text-gray-700 capitalize">
+                  {field.name.replace(/([A-Z])/g, ' $1')} *
+                </label>
+                <input
+                  type={field.type}
+                  name={field.name}
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  placeholder={field.placeholder}
+                  required
+                  className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none transition-all bg-white bg-opacity-80 hover:border-green-500"
+                />
+              </div>
+            ))}
+
+            {/* Crop Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-800">Full Name *</label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-green-600 focus:outline-none transition-all duration-200 hover:border-green-500 bg-white bg-opacity-80"
-                placeholder="e.g., John Adebayo"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-800">Email Address *</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-green-600 focus:outline-none transition-all duration-200 hover:border-green-500 bg-white bg-opacity-80"
-                placeholder="e.g., farmfresh@example.com"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-800">Password *</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-green-600 focus:outline-none transition-all duration-200 hover:border-green-500 bg-white bg-opacity-80"
-                placeholder="Enter a strong password"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-800">Phone Number *</label>
-              <input
-                type="text"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-green-600 focus:outline-none transition-all duration-200 hover:border-green-500 bg-white bg-opacity-80"
-                placeholder="e.g., +234 123 456 7890"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-800">Farm Name *</label>
-              <input
-                type="text"
-                name="farmName"
-                value={formData.farmName}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-green-600 focus:outline-none transition-all duration-200 hover:border-green-500 bg-white bg-opacity-80"
-                placeholder="e.g., Green Valley Farms"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-800">Farm Location *</label>
-              <input
-                type="text"
-                name="farmLocation"
-                value={formData.farmLocation}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-green-600 focus:outline-none transition-all duration-200 hover:border-green-500 bg-white bg-opacity-80"
-                placeholder="e.g., 123 Farm Road"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-800">Crops or Produce *</label>
+              <label className="block text-sm font-medium text-gray-700">Crops or Produce *</label>
               <Select
                 isMulti
                 options={cropOptions}
                 onChange={handleCropsChange}
-                className="w-full"
                 placeholder="Select your crops..."
-                required
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    borderRadius: '0.375rem',
-                    borderColor: '#d1d5db',
-                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                    '&:hover': { borderColor: '#10b981' },
-                    transition: 'all 0.2s',
-                  }),
-                }}
               />
             </div>
+
+            {/* Files */}
             <div>
-              <label className="block text-sm font-medium text-gray-800">Profile Picture</label>
+              <label className="block text-sm font-medium text-gray-700">Profile Picture</label>
               <input
                 type="file"
                 name="profilePicture"
                 accept="image/*"
                 onChange={handleChange}
-                className="w-full p-3 border rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-green-100 file:text-green-800 hover:file:bg-green-200 transition-all duration-200 bg-white bg-opacity-80"
+                className="w-full border p-3 rounded-md file:rounded file:border-0 file:bg-green-100 file:text-green-700 hover:file:bg-green-200"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-800">Verification Documents</label>
+              <label className="block text-sm font-medium text-gray-700">Verification Documents</label>
               <input
                 type="file"
                 name="verificationDocs"
                 accept=".pdf,.jpg,.png"
                 onChange={handleChange}
-                className="w-full p-3 border rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-green-100 file:text-green-800 hover:file:bg-green-200 transition-all duration-200 bg-white bg-opacity-80"
+                className="w-full border p-3 rounded-md file:rounded file:border-0 file:bg-green-100 file:text-green-700 hover:file:bg-green-200"
               />
             </div>
-            <button
+
+            <motion.button
               type="submit"
+              whileTap={{ scale: 0.95 }}
               disabled={loading}
-              className="w-full bg-green-700 text-white p-3 rounded-md hover:bg-green-800 transition-all duration-300 disabled:bg-gray-400 transform hover:scale-105"
+              className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-800 transition disabled:bg-gray-400 font-semibold shadow-md"
             >
               {loading ? 'Processing...' : 'Join the Harvest'}
-            </button>
+            </motion.button>
           </form>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -78,7 +78,7 @@ const dummyProducts = [
 
 function FeaturedProducts() {
   return (
-    <section className="bg-gray-100 py-10">
+    <section className="bg-[#E4FDE1] py-10">
       <div className="container mx-auto px-4">
         {/* Row 1: Title & optional controls */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-2">
