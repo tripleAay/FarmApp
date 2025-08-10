@@ -1,6 +1,7 @@
 import React from 'react';
-import DashHead from '../components/DashHead';
-import FarmerProfile from '../pages/FarmerProfile'; // Assumes FarmerProfile expects a `user` prop (optional)
+import { Link } from 'react-router-dom'; // Added for client-side routing
+import DashHead from '../../components/DashHead';
+import FarmerProfile from './FarmerProfile'; // Assumes FarmerProfile expects a `user` prop (optional)
 
 // Dummy user data in case database isn't ready
 const dummyUser = {
@@ -18,9 +19,9 @@ function FarmerDashboard() {
       <aside className="w-64 bg-white shadow-lg p-6 hidden md:block">
         <h2 className="text-xl font-bold mb-6 text-green-800">Farmer Panel</h2>
         <nav className="space-y-4 text-gray-700 font-medium">
-          <a href="#products" className="hover:text-green-600 block">📦 My Products</a>
-          <a href="#orders" className="hover:text-green-600 block">🛒 Orders</a>
-          <a href="#add-product" className="hover:text-green-600 block">➕ Add Product</a>
+          <Link to="/products-display" className="hover:text-green-600 block">📦 My Products</Link>
+          <Link to="/farmer-order" className="hover:text-green-600 block">🛒 Orders</Link>
+          <Link to="/products-add" className="hover:text-green-600 block">➕ Add Product</Link>
           <a href="#wallet" className="hover:text-green-600 block">💰 Wallet</a>
           <a href="#messages" className="hover:text-green-600 block">💬 Messages</a>
           <a href="#settings" className="hover:text-green-600 block">⚙️ Settings</a>

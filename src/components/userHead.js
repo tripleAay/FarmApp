@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaUserCircle, FaShoppingCart } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function UserHead({ userName = 'Guest', location = 'Unknown', balance = 0, cartItems = 0 }) {
+function UserHead({ location = 'Unknown', balance = 0, cartItems = 0 }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const dummyTexts = [
     'Welcome to Farm Mgt!',
     'Explore our products',
@@ -9,6 +13,40 @@ function UserHead({ userName = 'Guest', location = 'Unknown', balance = 0, cartI
     'Happy farming!',
   ];
   const [currentText, setCurrentText] = useState(0);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        const role = localStorage.getItem('role'); // 'buyer' or 'farmer'
+        if (!token || !userId || !role) {
+          throw new Error('Not authenticated');
+        }
+
+        const endpoint = role === 'buyer' ? `/api/buyer/${userId}` : `/api/farmer/${userId}`;
+        const response = await fetch(`http://localhost:5000${endpoint}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error);
+        setUser(result.user || result.farmer);
+      } catch (error) {
+        console.error('Fetch User Error:', error);
+        toast.error('Failed to load user data', {
+          position: 'top-right',
+          autoClose: 3000,
+          theme: 'colored',
+        });
+        setUser({ fullName: 'Guest', profilePicture: null });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -20,15 +58,25 @@ function UserHead({ userName = 'Guest', location = 'Unknown', balance = 0, cartI
   return (
     <header className="bg-white border-b py-3 px-4 shadow-sm z-30 mt-17">
       <div className="max-w-7xl mx-auto flex items-center justify-between relative gap-4">
-        
         {/* Left Section */}
         <div className="flex items-center gap-3 min-w-0">
-          {/* Profile */}
+          {/* Profile Picture */}
           <div className="relative group">
-            <FaUserCircle
-              className="text-4xl text-gray-600 hover:text-blue-500 transition duration-200 cursor-pointer"
-              aria-label="User Profile"
-            />
+            {loading ? (
+              <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse" />
+            ) : user && user.profilePicture ? (
+              <img
+                src={`http://localhost:5000${user.profilePicture}`}
+                alt="Profile"
+                className="w-10 h-10 rounded-full object-cover"
+                onError={() => setUser({ ...user, profilePicture: null })}
+              />
+            ) : (
+              <FaUserCircle
+                className="text-4xl text-gray-600 hover:text-blue-500 transition duration-200 cursor-pointer"
+                aria-label="User Profile"
+              />
+            )}
             <div className="absolute top-10 left-0 bg-gray-800 text-white text-xs font-semibold px-2 py-1 rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
               View Profile
             </div>
@@ -36,7 +84,9 @@ function UserHead({ userName = 'Guest', location = 'Unknown', balance = 0, cartI
 
           {/* User Info */}
           <div className="flex flex-wrap gap-1 text-sm font-medium truncate">
-            <span className="text-gray-900 truncate">Hello, <strong>{userName}</strong></span>
+            <span className="text-gray-900 truncate">
+              Hello, <strong>{loading ? 'Loading...' : user?.fullName || 'Guest'}</strong>
+            </span>
             <span className="hidden sm:inline text-gray-400">|</span>
             <span className="text-gray-600 truncate">{location}</span>
             <span className="hidden sm:inline text-gray-400">|</span>
@@ -68,7 +118,6 @@ function UserHead({ userName = 'Guest', location = 'Unknown', balance = 0, cartI
             View Cart
           </div>
         </div>
-
       </div>
     </header>
   );

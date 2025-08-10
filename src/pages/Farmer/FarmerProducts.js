@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const FarmerAddProduct = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
-  // Form validation schema
   const validationSchema = Yup.object({
     name: Yup.string()
       .required('Product name is required')
@@ -27,7 +26,6 @@ const FarmerAddProduct = () => {
       }),
   });
 
-  // Preview selected image
   const handleImageChange = (e, setFieldValue) => {
     const file = e.target.files[0];
     if (file) {
@@ -36,7 +34,6 @@ const FarmerAddProduct = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       const formData = new FormData();
@@ -63,93 +60,87 @@ const FarmerAddProduct = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 py-10 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center px-4 py-10">
       <ToastContainer />
-      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8">
-        <h1 className="text-3xl font-bold text-green-800 mb-6 text-center">Add New Product</h1>
+      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-lg p-10">
+        <h1 className="text-4xl font-bold text-center text-green-800 mb-8">Add New Product</h1>
         <Formik
           initialValues={{ name: '', description: '', price: '', image: null }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting, setFieldValue }) => (
-            <Form className="space-y-6" encType="multipart/form-data">
+            <Form className="grid grid-cols-1 gap-6 sm:grid-cols-2" encType="multipart/form-data">
               {/* Product Name */}
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Product Name
-                </label>
+              <div className="col-span-1 sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700">Product Name</label>
                 <Field
                   type="text"
                   name="name"
                   placeholder="e.g., Fresh Tomatoes"
-                  className="mt-1 w-full rounded-md border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-green-500 focus:border-green-500 text-sm"
                 />
                 <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
               </div>
 
-              {/* Product Description */}
-              <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                  Description
-                </label>
+              {/* Description */}
+              <div className="col-span-1 sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700">Description</label>
                 <Field
                   as="textarea"
                   name="description"
                   rows="4"
                   placeholder="Describe your product..."
-                  className="mt-1 w-full rounded-md border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-green-500 focus:border-green-500 text-sm"
                 />
                 <ErrorMessage name="description" component="div" className="text-red-500 text-sm mt-1" />
               </div>
 
-              {/* Product Price */}
-              <div>
-                <label htmlFor="price" className="block text-sm font-medium text-gray-700">
-                  Price (₦)
-                </label>
+              {/* Price */}
+              <div className="col-span-1">
+                <label className="block text-sm font-medium text-gray-700">Price (₦)</label>
                 <Field
                   type="number"
                   name="price"
+                  placeholder="e.g., 1500.00"
                   min="0.01"
                   step="0.01"
-                  placeholder="e.g., 1500.00"
-                  className="mt-1 w-full rounded-md border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-green-500 focus:border-green-500 text-sm"
                 />
                 <ErrorMessage name="price" component="div" className="text-red-500 text-sm mt-1" />
               </div>
 
-              {/* Product Image Upload */}
-              <div>
-                <label htmlFor="image" className="block text-sm font-medium text-gray-700">
-                  Product Image
-                </label>
+              {/* Image Upload */}
+              <div className="col-span-1">
+                <label className="block text-sm font-medium text-gray-700">Product Image</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => handleImageChange(e, setFieldValue)}
-                  className="mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-green-100 file:text-green-800 hover:file:bg-green-200"
+                  className="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-100 file:text-green-700 hover:file:bg-green-200"
                 />
                 <ErrorMessage name="image" component="div" className="text-red-500 text-sm mt-1" />
-                {imagePreview && (
-                  <div className="mt-4">
-                    <img
-                      src={imagePreview}
-                      alt="Product Preview"
-                      className="h-40 w-auto rounded-lg shadow"
-                    />
-                  </div>
-                )}
               </div>
 
+              {/* Image Preview */}
+              {imagePreview && (
+                <div className="col-span-1 sm:col-span-2">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="rounded-lg shadow-md h-48 object-cover w-full mt-2"
+                  />
+                </div>
+              )}
+
               {/* Submit Button */}
-              <div className="text-center">
+              <div className="col-span-1 sm:col-span-2 text-center">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center justify-center px-6 py-2 border border-transparent text-sm font-semibold rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-60"
+                  className="w-full sm:w-auto px-6 py-3 rounded-lg text-white bg-green-600 hover:bg-green-700 font-medium shadow-md transition-all duration-200 ease-in-out disabled:opacity-60"
                 >
-                  {isSubmitting ? 'Adding...' : 'Add Product'}
+                  {isSubmitting ? 'Adding Product...' : 'Add Product'}
                 </button>
               </div>
             </Form>
