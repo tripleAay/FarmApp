@@ -63,8 +63,9 @@ const Login = () => {
 
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || 'Login failed');
-
+      // console.log(result.user.id)
       // Store JWT token
+      localStorage.setItem('loggedInId', result.user.id);
       localStorage.setItem('token', result.token);
       localStorage.setItem('userRole', result.user.role);
 

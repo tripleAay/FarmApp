@@ -37,7 +37,7 @@ const fetchStats = async () => {
 const fetchFeaturedProducts = async () => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Not authenticated');
-  const response = await fetch('http://localhost:5000/api/products/featured', {
+  const response = await fetch('http://localhost:5000/api/products/user', {
     headers: { Authorization: `Bearer ${token}` },
   });
   const result = await response.json();
@@ -141,29 +141,29 @@ const UserDashboard = () => {
 
   const isLoading = isUserLoading || isStatsLoading || isProductsLoading || isOrdersLoading;
 
-  if (userError || statsError || productsError || ordersError) {
-    return (
-      <div className="min-h-screen bg-green-50 flex items-center justify-center">
-        <div className="bg-white rounded-xl shadow-xl max-w-2xl mx-auto p-8 text-center">
-          <h3 className="text-xl font-bold text-gray-800">Error Loading Dashboard</h3>
-          <p className="text-gray-600 mt-2">
-            {userError?.message === 'Not authenticated' ||
-              statsError?.message === 'Not authenticated' ||
-              productsError?.message === 'Not authenticated' ||
-              ordersError?.message === 'Not authenticated'
-              ? 'Please log in to view your dashboard.'
-              : 'An error occurred while fetching your dashboard. Check if the server is running and endpoints are configured.'}
-          </p>
-          <button
-            onClick={() => navigate('/login')}
-            className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
-          >
-            Go to Login
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // if (userError || statsError || productsError || ordersError) {
+  //   return (
+  //     <div className="min-h-screen bg-green-50 flex items-center justify-center">
+  //       <div className="bg-white rounded-xl shadow-xl max-w-2xl mx-auto p-8 text-center">
+  //         <h3 className="text-xl font-bold text-gray-800">Error Loading Dashboard</h3>
+  //         <p className="text-gray-600 mt-2">
+  //           {userError?.message === 'Not authenticated' ||
+  //             statsError?.message === 'Not authenticated' ||
+  //             productsError?.message === 'Not authenticated' ||
+  //             ordersError?.message === 'Not authenticated'
+  //             ? 'Please log in to view your dashboard.'
+  //             : 'An error occurred while fetching your dashboard. Check if the server is running and endpoints are configured.'}
+  //         </p>
+  //         <button
+  //           onClick={() => navigate('/login')}
+  //           className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+  //         >
+  //           Go to Login
+  //         </button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (isLoading) {
     return (

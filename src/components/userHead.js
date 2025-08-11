@@ -56,7 +56,7 @@ function UserHead({ location = 'Unknown', balance = 0, cartItems = 0 }) {
   }, []);
 
   return (
-    <header className="bg-white border-b py-3 px-4 shadow-sm z-30 mt-17">
+    <header className="bg-white border-b py-3 px-4 shadow-sm z-30 mt-20">
       <div className="max-w-7xl mx-auto flex items-center justify-between relative gap-4">
         {/* Left Section */}
         <div className="flex items-center gap-3 min-w-0">

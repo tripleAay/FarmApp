@@ -56,8 +56,8 @@ const FarmerSignup = () => {
       !formData.password ||
       !formData.phoneNumber ||
       !formData.farmName ||
-      !formData.farmLocation ||
-      !formData.crops.length
+      !formData.farmLocation
+
     ) {
       toast.error('Please fill all required fields.', {
         position: 'top-right',
@@ -297,37 +297,7 @@ const FarmerSignup = () => {
               </div>
             ))}
 
-            <div>
-              <label htmlFor="crops" className="block text-sm font-medium text-gray-800">
-                Crops or Produce *
-              </label>
-              <Select
-                isMulti
-                options={cropOptions}
-                onChange={handleCropsChange}
-                placeholder="Select your crops..."
-                className="mt-1"
-                classNamePrefix="select"
-                required
-                aria-required="true"
-                aria-describedby="crops-error"
-              />
-            </div>
 
-            <div>
-              <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-800">
-                Profile Picture (JPEG/PNG)
-              </label>
-              <input
-                id="profilePicture"
-                type="file"
-                name="profilePicture"
-                accept="image/jpeg,image/png"
-                onChange={handleChange}
-                className="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-teal-500 outline-none transition-all duration-300 hover:border-teal-500 bg-white/70 text-gray-800"
-                aria-describedby="profilePicture-error"
-              />
-            </div>
             <div>
               <label htmlFor="verificationDocs" className="block text-sm font-medium text-gray-800">
                 Verification Documents (JPEG/PNG/PDF)
