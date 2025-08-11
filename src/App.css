@@ -1,7 +1,4 @@
 /* App.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Custom styles for text shadow and animations */
 .text-shadow-lg {
@@ -21,8 +18,13 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Splash effect for buttons */
@@ -32,7 +34,7 @@
 }
 
 .splash-button::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 0;
   height: 0;
@@ -56,3 +58,7 @@
     display: none;
   }
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

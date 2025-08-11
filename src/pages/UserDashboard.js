@@ -4,9 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DashHead from '../components/DashHead';
-import UserHead from '../components/UserHead';
+import UserHead from '../components/userHead';
 import FeaturedProducts from '../components/FeaturedProducts';
-import UserOrder from '../components/UserOrder';
+import UserOrder from '../components/userOrder';
 import BottomNav from '../components/ButtomNav'; // Fixed import
 
 const fetchUser = async () => {
@@ -148,9 +148,9 @@ const UserDashboard = () => {
           <h3 className="text-xl font-bold text-gray-800">Error Loading Dashboard</h3>
           <p className="text-gray-600 mt-2">
             {userError?.message === 'Not authenticated' ||
-            statsError?.message === 'Not authenticated' ||
-            productsError?.message === 'Not authenticated' ||
-            ordersError?.message === 'Not authenticated'
+              statsError?.message === 'Not authenticated' ||
+              productsError?.message === 'Not authenticated' ||
+              ordersError?.message === 'Not authenticated'
               ? 'Please log in to view your dashboard.'
               : 'An error occurred while fetching your dashboard. Check if the server is running and endpoints are configured.'}
           </p>
