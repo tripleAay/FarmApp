@@ -171,16 +171,25 @@ function FarmerDashboard() {
         {/* Actions */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
           {[
-            'Add New Product',
-            'Withdraw Earnings',
-            'Contact Support',
-          ].map((action, idx) => (
-            <div key={idx} className="bg-green-50 p-4 rounded-lg text-center shadow-sm">
-              <button className="text-green-700 font-semibold hover:underline">
-                {action}
-              </button>
-            </div>
-          ))}
+            <Link key="add" to="/products-add" className="hover:text-green-600 block">
+              ➕ Add New Product
+            </Link>,
+
+            <Link key="withdraw" to="/withdraw" className="hover:text-green-600 block">
+              💳 Withdraw Earnings
+            </Link>,
+
+            <Link key="support" to="/support" className="hover:text-green-600 block">
+              📞 Contact Support
+            </Link>
+          ]
+            .map((action, idx) => (
+              <div key={idx} className="bg-green-50 p-4 rounded-lg text-center shadow-sm">
+                <button className="text-green-700 font-semibold hover:underline">
+                  {action}
+                </button>
+              </div>
+            ))}
         </div>
 
         {/* Profile Summary */}
