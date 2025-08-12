@@ -10,6 +10,7 @@ const EditProduct = () => {
     const farmerId = localStorage.getItem("loggedInId");
     const [isUpdating, setIsUpdating] = useState(false);
 
+
     const [formData, setFormData] = useState({
         name: "",
         description: "",
