@@ -8,14 +8,17 @@ const ProductDetails = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isInCart, setIsInCart] = useState(false);
+    const userId = localStorage.getItem('loggedInId');
+
 
     const fetchProduct = async () => {
-        setLoading(true);
         try {
             const res = await axios.get(
                 `http://localhost:5000/api/products/products/${id}`
             );
-            setProduct(res.data || null);
+            setProduct(res.data);  // true or false
+
         } catch (error) {
             console.error(error);
             toast.error("Failed to load product details");
@@ -24,9 +27,56 @@ const ProductDetails = () => {
         }
     };
 
+    const ifInCart = async () => {
+        try {
+            const res = await axios.get(
+                `http://localhost:5000/api/products/check-in-cart/${userId}/${id}`
+            );
+
+            setIsInCart(res.data.inCart);
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to load product details");
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         fetchProduct();
-    }, [id]);
+        ifInCart();
+
+    }, [userId, id]);
+
+    const [updating, setupdating] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const handleAddToCart = async () => {
+        try {
+            setupdating(true);
+            setMessage("");
+
+            const res = await axios.post(
+                `http://localhost:5000/api/products/addtocart/${userId}/${id}`,
+                { quantity: 1 }
+            );
+
+
+            if (res.data.success) {
+                setMessage("✅ Added to cart!");
+                toast.success("✅ ", res.data.message);
+
+            } else {
+                setMessage("⚠️ Could not add to cart");
+            }
+            ifInCart();
+        } catch (err) {
+            console.error(err);
+            setMessage("❌ Error adding to cart");
+        } finally {
+            setupdating(false);
+        }
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 p-6">
@@ -122,9 +172,22 @@ const ProductDetails = () => {
                             </select>
 
                             {/* Add to Cart Button */}
-                            <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg shadow-md transition duration-300">
-                                🛒 Add to Cart
+                            <button
+                                onClick={handleAddToCart}
+                                disabled={isInCart} // disables if true
+                                className={`w-full py-3 rounded-lg text-lg shadow-md transition duration-300
+    ${isInCart
+                                        ? "bg-gray-400 cursor-not-allowed"
+                                        : "bg-green-600 hover:bg-green-700 text-white"
+                                    }`}
+                            >
+                                🛒 {isInCart
+                                    ? "Added in Cart"
+                                    : updating
+                                        ? "Updating Cart"
+                                        : "Add to Cart"}
                             </button>
+
 
                             {/* Extra Info */}
                             <ul className="mt-6 text-gray-600 space-y-2">

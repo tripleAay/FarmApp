@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
-
+import axios from 'axios';
 const dummyCartItems = [
   {
     id: 1,
@@ -21,7 +21,27 @@ const dummyCartItems = [
 
 function Cart() {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState(dummyCartItems);
+  const userId = localStorage.getItem('loggedInId')
+
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/products/cart/${userId}`);
+        setCartItems(res.data.products || []);
+      } catch (err) {
+        console.error("Error fetching cart:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchCart();
+    }
+  }, [userId]);
 
   // Handle quantity increment
   const handleIncrement = (id) => {
