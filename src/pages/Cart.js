@@ -26,41 +26,55 @@ function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchCart = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/products/cart/${userId}`);
+      setCartItems(res.data.products || []);
+    } catch (err) {
+      console.error("Error fetching cart:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/products/cart/${userId}`);
-        setCartItems(res.data.products || []);
-      } catch (err) {
-        console.error("Error fetching cart:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+
 
     if (userId) {
       fetchCart();
     }
   }, [userId]);
 
-  // Handle quantity increment
-  const handleIncrement = (id) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+  const handleIncrement = async (productId) => {
+    const action = "add";
+    try {
+      await axios.patch(`http://localhost:5000/api/products/cart/update/${userId}/${productId}/${action}`);
+      setCartItems((prevItems) =>
+        prevItems.map((item) =>
+          item._id === productId ? { ...item, quantity: item.quantity + 1 } : item
+        )
+      );
+      fetchCart();
+    } catch (error) {
+      console.error("Error incrementing quantity:", error);
+    }
   };
 
-  // Handle quantity decrement
-  const handleDecrement = (id) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
+  const handleDecrement = async (productId) => {
+    const action = "remove";
+    try {
+      await axios.patch(`http://localhost:5000/api/products/cart/update/${userId}/${productId}/${action}`);
+      setCartItems((prevItems) =>
+        prevItems.map((item) =>
+          item._id === productId && item.quantity > 1
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+      );
+      fetchCart();
+    } catch (error) {
+      console.error("Error decrementing quantity:", error);
+    }
   };
 
   // Handle item removal
@@ -109,7 +123,7 @@ function Cart() {
               className="flex items-center bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition"
             >
               <img
-                src={item.image}
+                src={`http://localhost:5000/${item.thumbnail.replace(/\\/g, '/')}`}
                 alt={item.name}
                 className="w-20 h-20 object-cover rounded-lg mr-4"
               />
@@ -118,7 +132,7 @@ function Cart() {
                 <div className="text-sm text-gray-600">₦{item.price.toLocaleString()}</div>
                 <div className="flex items-center mt-3 space-x-3">
                   <button
-                    onClick={() => handleDecrement(item.id)}
+                    onClick={() => handleDecrement(item.productId)}
                     className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300 transition disabled:opacity-50"
                     disabled={item.quantity === 1}
                   >
@@ -126,7 +140,7 @@ function Cart() {
                   </button>
                   <span className="w-8 text-center font-medium">{item.quantity}</span>
                   <button
-                    onClick={() => handleIncrement(item.id)}
+                    onClick={() => handleIncrement(item.productId)}
                     className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300 transition"
                   >
                     <span className="text-lg">+</span>
@@ -135,7 +149,7 @@ function Cart() {
               </div>
               <div className="flex flex-col items-end space-y-2">
                 <button
-                  onClick={() => handleRemove(item.id)}
+                  onClick={() => handleRemove(item._id)}
                   className="p-1 rounded-full hover:bg-red-100 transition"
                   aria-label="Remove item"
                 >
