@@ -78,9 +78,18 @@ function Cart() {
   };
 
   // Handle item removal
-  const handleRemove = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  const handleRemove = async (productId) => {
+    try {
+      await axios.patch(`http://localhost:5000/api/products/cart/remove/${userId}/${productId}`);
+
+      // Update state locally
+      setCartItems(prevItems => prevItems.filter(item => item.productId !== productId));
+
+    } catch (error) {
+      console.error("Error removing item", error);
+    }
   };
+
 
   // Calculate total price
   const totalPrice = cartItems.reduce(
@@ -149,7 +158,7 @@ function Cart() {
               </div>
               <div className="flex flex-col items-end space-y-2">
                 <button
-                  onClick={() => handleRemove(item._id)}
+                  onClick={() => handleRemove(item.productId)}
                   className="p-1 rounded-full hover:bg-red-100 transition"
                   aria-label="Remove item"
                 >
