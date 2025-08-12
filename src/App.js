@@ -16,6 +16,7 @@ import ProductsDisplay from './pages/Farmer/FarmerProductDisplay';
 import FarmerOrder from './pages/Farmer/FarmerOrder';
 import EdditProduct from './pages/Farmer/EdditProduct';
 import NotFound from './pages/NotFound';
+import ProductDetails from './pages/products/Products';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, staleTime: 5 * 60 * 1000 } },
@@ -34,6 +35,7 @@ function App() {
         <Route path="/products" element={<FeaturedProducts />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<UserProfile />} />
+        <Route path="/productdetails/:id" element={<ProductDetails />} />
         <Route path="/farmerdashboard" element={<FarmerDashboard />} />
         <Route path="/products-add" element={<FarmerAddProduct />} />
         <Route path="/products-display" element={<ProductsDisplay />} />

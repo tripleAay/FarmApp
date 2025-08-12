@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 // Extended dummy data to demonstrate multiple rows
 const dummyProducts = [
@@ -78,6 +80,8 @@ const dummyProducts = [
 
 function FeaturedProducts() {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -113,6 +117,7 @@ function FeaturedProducts() {
           {products.map((product) => (
             <div
               key={product.id}
+              onClick={() => navigate(`/productdetails/${product._id}`)}
               className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300"
             >
               <img

@@ -48,7 +48,6 @@ const EditProduct = () => {
         try {
             const res = await axios.get(`http://localhost:5000/api/products/products/${id}`);
             const product = res.data;
-            console.log(res);
 
             setFormData({
                 name: product.name || "",

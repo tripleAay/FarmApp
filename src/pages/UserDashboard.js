@@ -9,6 +9,7 @@ import FeaturedProducts from '../components/FeaturedProducts';
 import UserOrder from '../components/userOrder';
 import BottomNav from '../components/ButtomNav'; // Fixed import
 
+
 const fetchUser = async () => {
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
