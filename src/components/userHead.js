@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaUserCircle, FaShoppingCart } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import axios
+  from 'axios';
 function UserHead({ location = 'Unknown', balance = 0, cartItems = 0 }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,39 +15,45 @@ function UserHead({ location = 'Unknown', balance = 0, cartItems = 0 }) {
   ];
   const [currentText, setCurrentText] = useState(0);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
-        const role = localStorage.getItem('role'); // 'buyer' or 'farmer'
-        if (!token || !userId || !role) {
-          throw new Error('Not authenticated');
-        }
+  const fetchUser = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('loggedInId');
+      const role = localStorage.getItem('userRole'); // 'buyer' or 'farmer'
 
-        const endpoint = role === 'buyer' ? `/api/buyer/${userId}` : `/api/farmer/${userId}`;
-        const response = await fetch(`http://localhost:5000${endpoint}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error);
-        setUser(result.user || result.farmer);
-      } catch (error) {
-        console.error('Fetch User Error:', error);
-        toast.error('Failed to load user data', {
-          position: 'top-right',
-          autoClose: 3000,
-          theme: 'colored',
-        });
-        setUser({ fullName: 'Guest', profilePicture: null });
-      } finally {
-        setLoading(false);
+      if (!token || !userId || !role) {
+        throw new Error('Not authenticated');
       }
-    };
+
+      const endpoint = role === 'buyer'
+        ? `/api/farmers/user/${userId}`
+        : `/api/farmers/${userId}`;
+
+      const response = await axios.get(`http://localhost:5000${endpoint}`);
+      const result = response.data;
+
+      setUser(result.founduser || result.farmer);
+      console.log(result);
+
+    } catch (error) {
+      console.error('Fetch User Error:', error);
+      toast.error('Failed to load user data', {
+        position: 'top-right',
+        autoClose: 3000,
+        theme: 'colored',
+      });
+      setUser({ fullName: 'Guest', profilePicture: null });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+
+
     fetchUser();
   }, []);
+
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -2,22 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
-const dummyCartItems = [
-  {
-    id: 1,
-    name: 'Fresh Tomatoes (Basket)',
-    image: 'https://via.placeholder.com/80x80.png?text=Tomatoes',
-    price: 1200,
-    quantity: 2,
-  },
-  {
-    id: 2,
-    name: 'Plantain Bunch',
-    image: 'https://via.placeholder.com/80x80.png?text=Plantain',
-    price: 1800,
-    quantity: 1,
-  },
-];
 
 function Cart() {
   const navigate = useNavigate();
