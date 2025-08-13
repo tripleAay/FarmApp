@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Cart() {
   const navigate = useNavigate();
@@ -9,6 +11,7 @@ function Cart() {
 
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [placingOrder, setPlacingOrder] = useState(false);
 
   const fetchCart = async () => {
     try {
@@ -20,6 +23,19 @@ function Cart() {
       setLoading(false);
     }
   };
+
+  const placeOrder = async () => {
+    setPlacingOrder(true)
+    try {
+      const res = await axios.post(`http://localhost:5000/api/products/place-order/${userId}`);
+      fetchCart();
+      toast.success(res.data.message)
+    } catch (err) {
+      console.error("Error fetching cart:", err);
+    } finally {
+      setPlacingOrder(false);
+    }
+  }
 
   useEffect(() => {
 
@@ -83,6 +99,7 @@ function Cart() {
 
   return (
     <div className="p-4 pb-24 bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+      <ToastContainer />
       {/* Header with Back Button */}
       <div className="flex items-center mb-6">
         <button
@@ -165,12 +182,15 @@ function Cart() {
               <span>Total:</span>
               <span>₦{totalPrice.toLocaleString()}</span>
             </div>
-            <button className="w-full bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition shadow-md">
-              Proceed to Checkout
+            <button
+              onClick={placeOrder}
+              className="w-full bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition shadow-md">
+              {placingOrder ? "Placing Your Order" : "Proceed to Checkout"}
             </button>
           </div>
         </div>
       )}
+
     </div>
   );
 }
