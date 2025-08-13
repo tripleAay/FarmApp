@@ -4,10 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const OrderInfo = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+
     const fetchOrderById = async (id) => {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('Not authenticated');
@@ -17,10 +17,7 @@ const OrderInfo = () => {
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || 'Failed to fetch order info');
         return result.order;
-        console.log(result.order);
-
     };
-
 
     const { data: order, isLoading, error } = useQuery({
         queryKey: ['orderInfo', id],
@@ -37,6 +34,12 @@ const OrderInfo = () => {
     const formatDate = (date) =>
         date ? new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A';
 
+    // ✅ Calculate balance manually
+    const calculateBalance = (products) => {
+        if (!products || !Array.isArray(products)) return 0;
+        return products.reduce((total, item) => total + item.price * item.quantity, 0);
+    };
+
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-green-50">
@@ -52,6 +55,8 @@ const OrderInfo = () => {
             </div>
         );
     }
+
+    const manualBalance = calculateBalance(order.products);
 
     return (
         <div className="min-h-screen bg-green-50 p-4 sm:p-6 md:p-8">
@@ -79,13 +84,9 @@ const OrderInfo = () => {
                 <h2 className="text-xl font-bold text-green-700 mb-4">Products</h2>
                 <div className="space-y-4">
                     {order.products.map((item, idx) => (
-                        <div
-                            key={idx}
-                            className="flex items-center gap-4 border-b pb-4 last:border-none last:pb-0"
-                        >
+                        <div key={idx} className="flex items-center gap-4 border-b pb-4 last:border-none last:pb-0">
                             <img
                                 src={`http://localhost:5000/${item.thumbnail.replace(/\\/g, '/')}`}
-
                                 alt={item.productName}
                                 className="w-16 h-16 object-cover rounded-md"
                             />
@@ -93,9 +94,7 @@ const OrderInfo = () => {
                                 <p className="font-semibold">{item.productName}</p>
                                 <p className="text-gray-600 text-sm">Qty: {item.quantity}</p>
                             </div>
-                            <p className="font-semibold text-green-700">
-                                ${item.price.toFixed(2)}
-                            </p>
+                            <p className="font-semibold text-green-700">₦{item.price.toFixed(2)}</p>
                         </div>
                     ))}
                 </div>
@@ -112,7 +111,16 @@ const OrderInfo = () => {
                     <p><span className="font-semibold">Transaction ID:</span> {order.transactionId || 'N/A'}</p>
                     <p><span className="font-semibold">Paid:</span> {order.paid ? 'Yes' : 'No'}</p>
                     <p><span className="font-semibold">Approved:</span> {order.approved ? 'Yes' : 'No'}</p>
-                    <p><span className="font-semibold">Total Price:</span> ₦{order.totalPrice?.toFixed(2)}</p>
+                    {/* <p><span className="font-semibold">Total Price (From DB):</span> ₦{order.Total?.toFixed(2)}</p> */}
+                    <p>
+                        <span className="font-semibold">Total Price:</span>{' '}
+                        {manualBalance.toLocaleString('en-NG', {
+                            style: 'currency',
+                            currency: 'NGN',
+                            minimumFractionDigits: 2
+                        })}
+                    </p>
+
                 </div>
             </div>
 
@@ -120,11 +128,7 @@ const OrderInfo = () => {
             {order.paymentImage && (
                 <div className="bg-white shadow-lg rounded-xl p-4 sm:p-6 mb-6">
                     <h2 className="text-xl font-bold text-green-700 mb-4">Payment Proof</h2>
-                    <img
-                        src={order.paymentImage}
-                        alt="Payment Proof"
-                        className="w-full max-w-md rounded-lg border"
-                    />
+                    <img src={order.paymentImage} alt="Payment Proof" className="w-full max-w-md rounded-lg border" />
                 </div>
             )}
 
