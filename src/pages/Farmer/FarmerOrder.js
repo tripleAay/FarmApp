@@ -15,7 +15,6 @@ function FarmerOrder() {
       const response = await axios.get(
         `http://localhost:5000/api/farmers/orders/${id}`
       );
-      console.log("Fetchec", response.data)
       setRecentOrders(response.data.orders || []);
     } catch (error) {
       console.error(error);
