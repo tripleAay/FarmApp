@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PaymentProofUpload from '../components/PaymentProofUpload';
 
 const OrderInfo = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     const fetchOrderById = async (id) => {
         const token = localStorage.getItem('token');
@@ -19,7 +23,7 @@ const OrderInfo = () => {
         return result.order;
     };
 
-    const { data: order, isLoading, error } = useQuery({
+    const { data: order, isLoading, error, refetch } = useQuery({
         queryKey: ['orderInfo', id],
         queryFn: () => fetchOrderById(id),
         retry: 1,
@@ -31,13 +35,20 @@ const OrderInfo = () => {
         },
     });
 
+
+
     const formatDate = (date) =>
         date ? new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A';
 
-    // ✅ Calculate balance manually
     const calculateBalance = (products) => {
         if (!products || !Array.isArray(products)) return 0;
         return products.reduce((total, item) => total + item.price * item.quantity, 0);
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setSelectedFile(file);
+        setPreviewUrl(file ? URL.createObjectURL(file) : null);
     };
 
     if (isLoading) {
@@ -94,7 +105,9 @@ const OrderInfo = () => {
                                 <p className="font-semibold">{item.productName}</p>
                                 <p className="text-gray-600 text-sm">Qty: {item.quantity}</p>
                             </div>
-                            <p className="font-semibold text-green-700">₦{item.price.toFixed(2)}</p>
+                            <p className="font-semibold text-green-700">
+                                {item.price.toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}
+                            </p>
                         </div>
                     ))}
                 </div>
@@ -111,7 +124,6 @@ const OrderInfo = () => {
                     <p><span className="font-semibold">Transaction ID:</span> {order.transactionId || 'N/A'}</p>
                     <p><span className="font-semibold">Paid:</span> {order.paid ? 'Yes' : 'No'}</p>
                     <p><span className="font-semibold">Approved:</span> {order.approved ? 'Yes' : 'No'}</p>
-                    {/* <p><span className="font-semibold">Total Price (From DB):</span> ₦{order.Total?.toFixed(2)}</p> */}
                     <p>
                         <span className="font-semibold">Total Price:</span>{' '}
                         {manualBalance.toLocaleString('en-NG', {
@@ -120,16 +132,20 @@ const OrderInfo = () => {
                             minimumFractionDigits: 2
                         })}
                     </p>
-
                 </div>
             </div>
 
             {/* Payment Proof */}
-            {order.paymentImage && (
+            {order.paymentImage ? (
                 <div className="bg-white shadow-lg rounded-xl p-4 sm:p-6 mb-6">
                     <h2 className="text-xl font-bold text-green-700 mb-4">Payment Proof</h2>
-                    <img src={order.paymentImage} alt="Payment Proof" className="w-full max-w-md rounded-lg border" />
+                    <img
+                        src={`http://localhost:5000/${order.paymentImage.replace(/\\/g, '/')}`}
+                        alt="Payment Proof" className="w-full max-w-md rounded-lg border" />
                 </div>
+            ) : (
+                <PaymentProofUpload orderId={id} />
+
             )}
 
             {/* Back Button */}
