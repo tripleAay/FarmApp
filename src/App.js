@@ -17,6 +17,7 @@ import FarmerOrder from './pages/Farmer/FarmerOrder';
 import EdditProduct from './pages/Farmer/EdditProduct';
 import NotFound from './pages/NotFound';
 import ProductDetails from './pages/products/Products';
+import OrderInfo from './pages/OrderInfo';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, staleTime: 5 * 60 * 1000 } },
@@ -41,6 +42,7 @@ function App() {
         <Route path="/products-display" element={<ProductsDisplay />} />
         <Route path="/farmer-order" element={<FarmerOrder />} />
         <Route path="/edit-product/:id" element={<EdditProduct />} />
+        <Route path="/order/:id" element={<OrderInfo />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </QueryClientProvider>

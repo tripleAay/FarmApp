@@ -32,6 +32,7 @@ const slides = [
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+
   // Auto-slide every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
@@ -54,9 +55,8 @@ const HeroSection = () => {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-500 ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-500 ${index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
             style={{ backgroundImage: `url(${slide.image})` }}
           >
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -74,13 +74,13 @@ const HeroSection = () => {
             </div>
           </div>
         ))}
-        
+
         <button
           className="absolute left-5 top-1/2 -translate-y-1/2 bg-black/50 rounded-full p-3 md:p-4 hover:bg-black/70 transition-colors"
           onClick={goToPrevSlide}
         >
           <svg className="w-6 h-6 md:w-8 md:h-8 text-white" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
           </svg>
         </button>
         <button
@@ -88,7 +88,7 @@ const HeroSection = () => {
           onClick={goToNextSlide}
         >
           <svg className="w-6 h-6 md:w-8 md:h-8 text-white" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+            <path fill="currentColor" d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
           </svg>
         </button>
 
@@ -96,9 +96,8 @@ const HeroSection = () => {
           {slides.map((_, index) => (
             <div
               key={index}
-              className={`w-3 h-3 rounded-full cursor-pointer transition-colors ${
-                index === currentSlide ? 'bg-white' : 'bg-white/50'
-              }`}
+              className={`w-3 h-3 rounded-full cursor-pointer transition-colors ${index === currentSlide ? 'bg-white' : 'bg-white/50'
+                }`}
               onClick={() => setCurrentSlide(index)}
             />
           ))}

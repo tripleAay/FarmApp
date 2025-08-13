@@ -1,45 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FarmerOrderTile from './FarmerOrderTile';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function FarmerOrder() {
-  const orders = [
-    {
-      _id: 'order1',
-      productName: 'Fresh Tomatoes',
-      quantity: 5,
-      price: 7500,
-      buyerName: 'Chinedu A.',
-      status: 'Pending',
-      createdAt: '2025-08-05T10:00:00Z',
-    },
-    {
-      _id: 'order2',
-      productName: 'Palm Oil (5L)',
-      quantity: 2,
-      price: 10000,
-      buyerName: 'Aisha Bello',
-      status: 'Shipped',
-      createdAt: '2025-08-04T09:30:00Z',
-    },
-    {
-      _id: 'order3',
-      productName: 'Sweet Potatoes',
-      quantity: 10,
-      price: 25000,
-      buyerName: 'Emeka O.',
-      status: 'Delivered',
-      createdAt: '2025-08-03T15:45:00Z',
-    },
-    {
-      _id: 'order4',
-      productName: 'Garden Eggs',
-      quantity: 3,
-      price: 3000,
-      buyerName: 'Funmi Ade',
-      status: 'Cancelled',
-      createdAt: '2025-08-01T12:15:00Z',
-    },
-  ];
+  const [orders, setRecentOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const id = localStorage.getItem('loggedInId');
+
+
+  const fetchOrder = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/farmers/orders/${id}`
+      );
+
+      setRecentOrders(response.data.orders || []);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to load Order');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useState(() => {
+    fetchOrder();
+  }, [id])
+
+
+
+
 
   // Color based on status
   const getStatusStyle = (status) => {
@@ -77,11 +69,11 @@ function FarmerOrder() {
             <tbody>
               {orders.map((order) => (
                 <tr key={order._id} className="border-t">
-                  <td className="py-3 px-4">{order.productName}</td>
-                  <td className="py-3 px-4">{order.buyerName}</td>
+                  <td className="py-3 px-4">{order.product}</td>
+                  <td className="py-3 px-4">{order.buyer}</td>
                   <td className="py-3 px-4">{order.quantity}</td>
-                  <td className="py-3 px-4">₦{order.price.toLocaleString()}</td>
-                  <td className="py-3 px-4">{new Date(order.createdAt).toLocaleDateString()}</td>
+                  <td className="py-3 px-4">{order.totalPrice}</td>
+                  <td className="py-3 px-4">{new Date(order.orderDate).toLocaleDateString()}</td>
                   <td className="py-3 px-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusStyle(order.status)}`}>
                       {order.status}

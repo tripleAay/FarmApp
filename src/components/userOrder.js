@@ -1,31 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-// Dummy data for orders
-const dummyOrders = [
-  {
-    id: 1234,
-    status: 'Pending Delivery',
-    date: null,
-  },
-  {
-    id: 1221,
-    status: 'Delivered',
-    date: 'July 30, 2025',
-  },
-  {
-    id: 1220,
-    status: 'Processing',
-    date: null,
-  },
-  {
-    id: 1219,
-    status: 'Delivered',
-    date: 'July 25, 2025',
-  },
-];
+
 
 function UserOrder() {
+  const userId = localStorage.getItem('loggedInId')
+  const navigate = useNavigate();
+  const [orderItems, setOrderItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [placingOrder, setPlacingOrder] = useState(false);
+
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/products/order/${userId}`);
+      setOrderItems(res.data.orders || []);
+      console.log(res.data.orders);
+
+    } catch (err) {
+      console.error("Error fetching orders:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, [userId])
   return (
     <section className="bg-gray-100 py-10">
       <div className="container mx-auto px-4">
@@ -36,28 +38,31 @@ function UserOrder() {
 
         {/* Orders List */}
         <div className="bg-white rounded-xl shadow-md p-6">
-          {dummyOrders.map((order) => (
+          {orderItems.map((order, index) => (
             <div
               key={order.id}
               className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition duration-200"
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <span className="font-semibold text-gray-800">#{order.id}</span>
-                <span
-                  className={`text-sm ${
-                    order.status === 'Delivered'
-                      ? 'text-green-600'
-                      : order.status === 'Pending Delivery'
-                      ? 'text-yellow-600'
-                      : 'text-blue-600'
-                  }`}
-                >
+                <span className="font-semibold text-gray-800">{index + 1}</span>
+                <span className={`text-sm ${order.status === 'Delivered'
+                  ? 'text-green-600'
+                  : order.status === 'Pending'
+                    ? 'text-yellow-600'
+                    : 'text-blue-600'
+                  }`}>
                   {order.status}
-                  {order.date && ` on ${order.date}`}
+
+                </span>
+                <span
+                  className='text-green-900'
+                >
+                  {order.orderedDate && `Placed on ${new Date(order.orderedDate).toLocaleString()}`}
+
                 </span>
               </div>
               <Link
-                to={`/order/${order.id}`}
+                to={`/order/${order._id}`}
                 className="text-sm text-green-600 hover:text-green-800 font-medium transition duration-200"
               >
                 View

@@ -9,11 +9,10 @@ import FeaturedProducts from '../components/FeaturedProducts';
 import UserOrder from '../components/userOrder';
 import BottomNav from '../components/ButtomNav'; // Fixed import
 
-
-const fetchUser = async () => {
+// Fetch functions
+const fetchUser = async ({ queryKey }) => {
+  const [, userId, role] = queryKey;
   const token = localStorage.getItem('token');
-  const userId = localStorage.getItem('userId');
-  const role = localStorage.getItem('role');
   if (!token || !userId || !role) throw new Error('Not authenticated');
   const endpoint = role === 'buyer' ? `/api/buyer/${userId}` : `/api/farmer/${userId}`;
   const response = await fetch(`http://localhost:5000${endpoint}`, {
@@ -59,21 +58,20 @@ const fetchOrders = async () => {
 
 const UserDashboard = () => {
   const navigate = useNavigate();
+  const userId = localStorage.getItem('userId');
+  const role = localStorage.getItem('role');
 
   const {
     data: user,
     isLoading: isUserLoading,
     error: userError,
   } = useQuery({
-    queryKey: ['user'],
+    queryKey: ['user', userId, role],
     queryFn: fetchUser,
+    enabled: !!userId && !!role, // only run if these exist
     retry: 1,
     onError: (err) => {
-      toast.error('Failed to load user data', {
-        position: 'top-right',
-        autoClose: 3000,
-        theme: 'colored',
-      });
+      toast.error('Failed to load user data', { theme: 'colored' });
       if (err.message === 'Not authenticated' || err.message.includes('401')) {
         navigate('/login');
       }
@@ -83,88 +81,34 @@ const UserDashboard = () => {
   const {
     data: stats,
     isLoading: isStatsLoading,
-    error: statsError,
   } = useQuery({
-    queryKey: ['stats'],
+    queryKey: ['stats', userId],
     queryFn: fetchStats,
+    enabled: !!userId,
     retry: 1,
-    onError: (err) => {
-      toast.error('Failed to load dashboard stats', {
-        position: 'top-right',
-        autoClose: 3000,
-        theme: 'colored',
-      });
-      if (err.message === 'Not authenticated' || err.message.includes('401')) {
-        navigate('/login');
-      }
-    },
   });
 
   const {
     data: products,
     isLoading: isProductsLoading,
-    error: productsError,
   } = useQuery({
-    queryKey: ['featuredProducts'],
+    queryKey: ['featuredProducts', userId],
     queryFn: fetchFeaturedProducts,
+    enabled: !!userId,
     retry: 1,
-    onError: (err) => {
-      toast.error('Failed to load featured products', {
-        position: 'top-right',
-        autoClose: 3000,
-        theme: 'colored',
-      });
-      if (err.message === 'Not authenticated' || err.message.includes('401')) {
-        navigate('/login');
-      }
-    },
   });
 
   const {
     data: orders,
     isLoading: isOrdersLoading,
-    error: ordersError,
   } = useQuery({
-    queryKey: ['orders'],
+    queryKey: ['orders', userId],
     queryFn: fetchOrders,
+    enabled: !!userId,
     retry: 1,
-    onError: (err) => {
-      toast.error('Failed to load orders', {
-        position: 'top-right',
-        autoClose: 3000,
-        theme: 'colored',
-      });
-      if (err.message === 'Not authenticated' || err.message.includes('401')) {
-        navigate('/login');
-      }
-    },
   });
 
   const isLoading = isUserLoading || isStatsLoading || isProductsLoading || isOrdersLoading;
-
-  // if (userError || statsError || productsError || ordersError) {
-  //   return (
-  //     <div className="min-h-screen bg-green-50 flex items-center justify-center">
-  //       <div className="bg-white rounded-xl shadow-xl max-w-2xl mx-auto p-8 text-center">
-  //         <h3 className="text-xl font-bold text-gray-800">Error Loading Dashboard</h3>
-  //         <p className="text-gray-600 mt-2">
-  //           {userError?.message === 'Not authenticated' ||
-  //             statsError?.message === 'Not authenticated' ||
-  //             productsError?.message === 'Not authenticated' ||
-  //             ordersError?.message === 'Not authenticated'
-  //             ? 'Please log in to view your dashboard.'
-  //             : 'An error occurred while fetching your dashboard. Check if the server is running and endpoints are configured.'}
-  //         </p>
-  //         <button
-  //           onClick={() => navigate('/login')}
-  //           className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
-  //         >
-  //           Go to Login
-  //         </button>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   if (isLoading) {
     return (
@@ -183,7 +127,7 @@ const UserDashboard = () => {
         user={user}
         location={user?.location || 'Unknown'}
         balance={user?.walletBalance || 0}
-        cartItems={0} // Update with actual cart data if available
+        cartItems={0}
       />
       <FeaturedProducts products={products || []} />
       <UserOrder orders={orders || []} />

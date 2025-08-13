@@ -7,6 +7,8 @@ import axios
 function UserHead({ location = 'Unknown', balance = 0, cartItems = 0 }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const userId = localStorage.getItem('loggedInId');
+
   const dummyTexts = [
     'Welcome to Farm Mgt!',
     'Explore our products',
@@ -18,7 +20,6 @@ function UserHead({ location = 'Unknown', balance = 0, cartItems = 0 }) {
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('loggedInId');
       const role = localStorage.getItem('userRole'); // 'buyer' or 'farmer'
 
       if (!token || !userId || !role) {
@@ -33,7 +34,6 @@ function UserHead({ location = 'Unknown', balance = 0, cartItems = 0 }) {
       const result = response.data;
 
       setUser(result.founduser || result.farmer);
-      console.log(result);
 
     } catch (error) {
       console.error('Fetch User Error:', error);
@@ -52,7 +52,7 @@ function UserHead({ location = 'Unknown', balance = 0, cartItems = 0 }) {
 
 
     fetchUser();
-  }, []);
+  }, [userId]);
 
 
   useEffect(() => {
@@ -60,7 +60,7 @@ function UserHead({ location = 'Unknown', balance = 0, cartItems = 0 }) {
       setCurrentText((prev) => (prev + 1) % dummyTexts.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [userId]);
 
   return (
     <header className="bg-white border-b py-3 px-4 shadow-sm z-30 mt-20">

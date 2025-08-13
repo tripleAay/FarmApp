@@ -46,7 +46,6 @@ function FarmerDashboard() {
     try {
       const res = await fetch(`http://localhost:5000/api/farmers/${id}`);
       const data = await res.json();
-      console.log("Farmer data", data);
 
       setFarmer(data.products || []);
       setRecentOrders(data.recentOrders || [])
@@ -60,7 +59,7 @@ function FarmerDashboard() {
 
     fetchProducts();
     fetchFarmer();
-  }, []);
+  }, [id]);
   return (
     <div className="flex min-h-screen bg-gray-100 mt-20">
       {/* Sidebar */}

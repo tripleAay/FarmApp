@@ -81,6 +81,8 @@ const dummyProducts = [
 function FeaturedProducts() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+  const userId = localStorage.getItem('loggedInId')
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -94,7 +96,7 @@ function FeaturedProducts() {
     };
 
     fetchProducts();
-  }, []); // ✅ Empty array means run once on mount
+  }, [userId]);
 
   return (
     <section className="bg-[#E4FDE1] py-10">
