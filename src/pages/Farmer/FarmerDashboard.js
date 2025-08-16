@@ -192,9 +192,9 @@ function FarmerDashboard() {
         </div>
 
         {/* Profile Summary */}
-        <div className="mt-10">
+        {/* <div className="mt-10">
           <FarmerProfile user={dummyUser} />
-        </div>
+        </div> */}
       </main >
     </div >
   );
