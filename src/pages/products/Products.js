@@ -91,12 +91,8 @@ const ProductDetails = () => {
                         <>
                             <img
                                 src={
-                                    product?.thumbnail
-                                        ? `http://localhost:5000/${product.thumbnail.replace(
-                                            /\\/g,
-                                            "/"
-                                        )}`
-                                        : "/fallback-image.png"
+                                    product.thumbnail
+
                                 }
                                 alt={product?.name || "Product"}
                                 className="rounded-xl w-full h-96 object-cover shadow-md"
@@ -106,12 +102,8 @@ const ProductDetails = () => {
                                     <img
                                         key={index}
                                         src={
-                                            product?.thumbnail
-                                                ? `http://localhost:5000/${img.replace(
-                                                    /\\/g,
-                                                    "/"
-                                                )}`
-                                                : "/fallback-image.png"
+                                            product.thumbnail
+
                                         }
 
                                         alt=""

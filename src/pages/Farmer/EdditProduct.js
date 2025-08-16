@@ -230,7 +230,7 @@ const EditProduct = () => {
                             !deletedThumbnail && (
                                 <div className="relative w-32 h-32 mb-2">
                                     <img
-                                        src={`http://localhost:5000/${existingThumbnail.replace(/\\/g, "/")}`}
+                                        src={existingThumbnail}
                                         alt="Thumbnail"
                                         className="object-cover w-full h-full rounded-lg"
                                     />
@@ -264,7 +264,7 @@ const EditProduct = () => {
                             {existingImages.map((img, index) => (
                                 <div key={index} className="relative w-24 h-24">
                                     <img
-                                        src={`http://localhost:5000/${img.replace(/\\/g, "/")}`}
+                                        src={img}
                                         alt={`Image ${index + 1}`}
                                         className="object-cover w-full h-full rounded-lg"
                                     />

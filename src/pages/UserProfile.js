@@ -1,29 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaEdit } from 'react-icons/fa';
-import PropTypes from 'prop-types';
+import axios from 'axios';
 
-const UserProfile = ({ user }) => {
+const UserProfile = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Define avatar and related logic at the top level
-  const firstName = user?.fullName?.split(' ')[0] || 'User';
-  const avatar = user?.profilePicture
-    ? typeof user.profilePicture === 'string'
-      ? user.profilePicture
-      : URL.createObjectURL(user.profilePicture)
-    : `https://ui-avatars.com/api/?name=${firstName}&background=FFA500&color=fff`;
+  const buyerId = localStorage.getItem('loggedInId');
 
-  // Clean up URL.createObjectURL to prevent memory leaks
-  useEffect(() => {
-    if (user?.profilePicture && typeof user.profilePicture !== 'string') {
-      return () => {
-        URL.revokeObjectURL(avatar);
-      };
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/farmers/buyer/${buyerId}`);
+      if (response.data) {
+        setUser(response.data.foundBuyer);
+      }
+    } catch (error) {
+      console.log("❌ Error fetching user data:", error);
+    } finally {
+      setLoading(false);
     }
-  }, [user?.profilePicture, avatar]);
+  };
 
-  // Handle case where user prop is not provided
+  useEffect(() => {
+    if (buyerId) {
+      fetchUserData();
+    } else {
+      setLoading(false);
+    }
+  }, [buyerId]);
+
+  // ⏳ Loading
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-100 via-orange-100 to-yellow-100">
+        <p className="text-lg font-semibold text-gray-700">Loading profile...</p>
+      </div>
+    );
+  }
+
+  // ❌ No User
   if (!user) {
     return (
       <div className="min-h-screen bg-gradient-to-r from-green-100 via-orange-100 to-yellow-100 p-4 sm:p-6 md:p-8 flex items-center justify-center">
@@ -41,7 +58,8 @@ const UserProfile = ({ user }) => {
     );
   }
 
-  const { fullName, email, phoneNumber, walletBalance = 0 } = user;
+  // ✅ Profile UI
+  const { fullName, email, phoneNumber, walletBalance = 0, profilePicture } = user;
 
   const handleBack = () => navigate(-1);
   const handleEditProfile = () => navigate('/edit-profile');
@@ -62,7 +80,7 @@ const UserProfile = ({ user }) => {
       <div className="bg-white rounded-xl shadow-xl max-w-2xl mx-auto overflow-hidden transition hover:shadow-2xl">
         {/* Top Banner */}
         <div className="bg-green-600 text-white py-6 px-8 text-center relative">
-          <h2 className="text-3xl font-bold">Welcome, {firstName} 👋</h2>
+          <h2 className="text-3xl font-bold">Welcome, {fullName} 👋</h2>
           <p className="text-sm mt-1 opacity-90">Your farm fresh journey continues here.</p>
           <button
             onClick={handleEditProfile}
@@ -77,7 +95,7 @@ const UserProfile = ({ user }) => {
         {/* Profile Section */}
         <div className="flex flex-col items-center p-8">
           <img
-            src={avatar}
+            src={profilePicture || "https://i.pinimg.com/1200x/c6/d7/13/c6d713e497fa8f56c8b94b385c8b720a.jpg"}
             alt={`${fullName || 'User'}'s profile picture`}
             className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-green-500 object-cover shadow-lg mb-4"
           />
@@ -109,16 +127,6 @@ const UserProfile = ({ user }) => {
       </div>
     </div>
   );
-};
-
-UserProfile.propTypes = {
-  user: PropTypes.shape({
-    fullName: PropTypes.string,
-    email: PropTypes.string,
-    phoneNumber: PropTypes.string,
-    profilePicture: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(File)]),
-    walletBalance: PropTypes.number,
-  }),
 };
 
 export default UserProfile;

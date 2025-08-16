@@ -97,7 +97,7 @@ const OrderInfo = () => {
                     {order.products.map((item, idx) => (
                         <div key={idx} className="flex items-center gap-4 border-b pb-4 last:border-none last:pb-0">
                             <img
-                                src={`http://localhost:5000/${item.thumbnail.replace(/\\/g, '/')}`}
+                                src={item.thumbnail}
                                 alt={item.productName}
                                 className="w-16 h-16 object-cover rounded-md"
                             />

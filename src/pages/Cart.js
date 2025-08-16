@@ -133,7 +133,7 @@ function Cart() {
               className="flex items-center bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition"
             >
               <img
-                src={`http://localhost:5000/${item.thumbnail.replace(/\\/g, '/')}`}
+                src={item.thumbnail}
                 alt={item.name}
                 className="w-20 h-20 object-cover rounded-lg mr-4"
               />

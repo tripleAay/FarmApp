@@ -60,7 +60,7 @@ function FarmerProductDisplay() {
                 className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col justify-between"
               >
                 <img
-                  src={`http://localhost:5000/${product.thumbnail.replace(/\\/g, '/')}`}
+                  src={product.thumbnail}
                   alt={product.name}
                   className="h-40 w-full object-cover rounded-lg mb-4"
                 />

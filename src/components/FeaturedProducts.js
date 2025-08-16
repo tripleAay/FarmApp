@@ -123,7 +123,7 @@ function FeaturedProducts() {
               className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300"
             >
               <img
-                src={`http://localhost:5000/${product.thumbnail.replace(/\\/g, '/')}`}
+                src={product.thumbnail}
 
                 alt={product.name}
                 className="w-full h-48 object-cover"
