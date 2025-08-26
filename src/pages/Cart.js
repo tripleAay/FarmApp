@@ -119,7 +119,7 @@ function Cart() {
           <p className="text-lg font-medium">Your cart is empty</p>
           <p className="text-sm mt-2">Add some fresh items to get started!</p>
           <button
-            onClick={() => navigate('/shop')}
+            onClick={() => navigate('/dashboard')}
             className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
           >
             Shop Now

@@ -6,7 +6,7 @@ import pepper from '../assets/images/joanna-kosinska-hkRU8viMpRA-unsplash.jpg';
 
 const Product = () => {
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-[#ADF7B6] py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">

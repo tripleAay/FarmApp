@@ -1,158 +1,258 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import smileTrader from '../assets/images/tobias-nii-kwatei-quartey-rpcCF2Asrx8-unsplash.jpg';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Leaf, Tractor, Utensils } from "lucide-react";
+
+// Placeholder image (replace with local asset if available)
+const smileTrader = "https://images.unsplash.com/photo-1516594798947-e65505ebb29a?q=80&w=1920";
 
 const GetStarted = () => {
   const navigate = useNavigate();
 
   const handleCancel = () => {
-    navigate('/');
+    navigate("/");
   };
 
   const handleFarmerClick = () => {
-    navigate('/farmer');
+    navigate("/farmer");
   };
 
   const handleFoodieClick = () => {
-    navigate('/foodie');
+    navigate("/foodie");
+  };
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const cardVariants = {
+    hover: { scale: 1.05, boxShadow: "0 10px 20px rgba(0, 0, 0, 0.15)", transition: { duration: 0.3 } },
+    tap: { scale: 0.95 },
+  };
+
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.2 } },
   };
 
   return (
-    <div
+    <section
       className="min-h-screen bg-cover bg-center relative"
       style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')",
+        backgroundImage: `url(${smileTrader})`,
       }}
     >
       {/* Overlay for readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/30"></div>
+      <div className="absolute inset-0 bg-[#57C785]"></div>
+
+      {/* Background Leaf Animation */}
+      <motion.div
+        className="absolute inset-0 opacity-10 pointer-events-none"
+        animate={{
+          backgroundImage: [
+            "radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.2), transparent)",
+            "radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.2), transparent)",
+          ],
+        }}
+        transition={{ duration: 5, repeat: Infinity, repeatType: "reverse" }}
+      >
+        <motion.div
+          className="absolute top-12 left-12 sm:left-16 text-white/20"
+          animate={{ rotate: [0, 10, -10, 0], y: [0, 5, 0] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          <Leaf className="w-10 h-10 sm:w-12 sm:h-12" />
+        </motion.div>
+        <motion.div
+          className="absolute bottom-12 right-12 sm:right-16 text-white/20"
+          animate={{ rotate: [0, -10, 10, 0], y: [0, -5, 0] }}
+          transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+        >
+          <Leaf className="w-10 h-10 sm:w-12 sm:h-12" />
+        </motion.div>
+      </motion.div>
 
       {/* Desktop View */}
-      <div className="hidden md:flex min-h-screen items-center justify-center px-12 py-16">
-        <div className="bg-white/95 rounded-3xl shadow-2xl p-12 max-w-4xl w-full transform transition-all duration-500 hover:shadow-3xl">
-          <div className="grid grid-cols-2 gap-30 items-center">
+      <div className="hidden md:flex min-h-screen items-center justify-center px-6 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-24">
+        <motion.div
+          className="bg-white/95 rounded-3xl shadow-2xl p-8 sm:p-10 lg:p-12 max-w-6xl w-full backdrop-blur-lg"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Left Section - Text and Options */}
             <div className="space-y-8">
-              <h1 className="text-5xl font-extrabold text-green-900 mb-4 leading-tight text-shadow-lg">
-                Start Your FarmProduceMart Journey
-              </h1>
-              <p className="text-gray-700 text-lg max-w-md leading-relaxed text-shadow">
-                Let us tailor your experience by identifying your role—connect with Nigeria’s finest farmers or savor the freshest produce.
-              </p>
-              <div className="space-y-6">
-                <button
-                  className="splash-button w-full bg-yellow-500 text-white px-8 py-4 rounded-xl font-semibold text-xl hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+              <motion.div className="text-center lg:text-left" variants={textVariants}>
+                <Link to="/" className="flex items-center justify-center lg:justify-start gap-3 mb-6">
+                  <motion.span
+                    className="bg-white text-green-700 rounded-full w-14 h-14 flex items-center justify-center font-bold text-2xl shadow-lg ring-2 ring-green-300/50"
+                    whileHover={{ scale: 1.15, rotateY: 180 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    F
+                  </motion.span>
+                  <h1 className="text-3xl sm:text-4xl font-bold text-green-800">
+                    Farm<span className="text-green-300">Marketplace</span>
+                  </h1>
+                </Link>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-green-800 leading-tight drop-shadow-md">
+                  Your Farm Marketplace Adventure Starts Here
+                </h2>
+                <p className="text-gray-600 text-base sm:text-lg lg:text-xl mt-4 max-w-lg leading-relaxed">
+                  Join Nigeria’s thriving community of farmers and foodies. Whether you grow the freshest produce or crave authentic flavors, we’ve got you covered!
+                </p>
+                <motion.div
+                  className="mt-4 flex items-center justify-center lg:justify-start gap-2 text-sm sm:text-base text-gray-500"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <Leaf className="w-5 h-5 sm:w-6 sm:h-6 text-green-300" />
+                  <span>Trusted by 50,000+ farmers and foodies</span>
+                </motion.div>
+              </motion.div>
+              <div className="space-y-4">
+                <motion.button
+                  className="w-full bg-yellow-400 text-green-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-yellow-500 shadow-md"
                   onClick={handleFarmerClick}
+                  variants={cardVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  aria-label="Join as a Farmer"
                 >
                   I’m a Farmer
-                </button>
-                <button
-                  className="splash-button w-full bg-green-500 text-white px-8 py-4 rounded-xl font-semibold text-xl hover:bg-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                </motion.button>
+                <motion.button
+                  className="w-full bg-green-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-green-700 shadow-md"
                   onClick={handleFoodieClick}
+                  variants={cardVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  aria-label="Join as a Foodie"
                 >
                   I’m a Foodie
-                </button>
+                </motion.button>
+                <motion.button
+                  className="w-full bg-transparent border-2 border-green-300 text-green-300 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-green-300 hover:text-green-900 transition-all duration-300"
+                  onClick={handleCancel}
+                  variants={cardVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  aria-label="Cancel and return to home"
+                >
+                  Cancel
+                </motion.button>
               </div>
-              <button
-                className="splash-button w-full bg-red-500 text-white px-6 py-3 rounded-xl font-medium text-lg hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-md"
-                onClick={handleCancel}
-              >
-                Cancel
-              </button>
             </div>
 
             {/* Right Section - Image */}
-            <div className="flex justify-end">
+            <motion.div
+              className="hidden lg:block"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               <img
                 src={smileTrader}
-                alt="Farm produce trader"
-                className="w-[28rem] h-[28rem] object-cover rounded-2xl shadow-lg"
+                alt="Farm produce trader smiling in a vibrant market"
+                className="w-full max-w-lg h-auto rounded-2xl shadow-lg object-cover"
+                onError={(e) => {
+                  e.target.src = "https://shorturl.at/uWcyJ";
+                }}
               />
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Mobile View */}
-      <div className="md:hidden min-h-screen flex items-center justify-center px-6 py-10">
-        <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full transform transition-all duration-300 hover:scale-105">
-          {/* Header */}
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-extrabold text-green-800 mb-2 leading-tight">
-              Let’s Get Started On Your Journey
-            </h1>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              Tell us who you are, so we can tailor your Farmers’ Market experience.
+      <div className="md:hidden min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-16">
+        <motion.div
+          className="bg-white/95 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-md w-full backdrop-blur-lg"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div className="text-center mb-8" variants={textVariants}>
+            <Link to="/" className="flex items-center justify-center gap-2 mb-4">
+              <motion.span
+                className="bg-white text-green-700 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg shadow-lg ring-2 ring-green-300/50"
+                whileHover={{ scale: 1.15, rotateY: 180 }}
+                transition={{ duration: 0.3 }}
+              >
+                F
+              </motion.span>
+              <h1 className="text-2xl sm:text-3xl font-bold text-green-800">
+                Farm<span className="text-green-300">Marketplace</span>
+              </h1>
+            </Link>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-green-800 mb-3 leading-tight drop-shadow-md">
+              Kickstart Your Journey
+            </h2>
+            <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-sm mx-auto">
+              Are you a farmer or a foodie? Choose your path to unlock fresh produce and vibrant communities.
             </p>
-          </div>
+          </motion.div>
 
           {/* Selection Cards */}
-          <div className="flex flex-col space-y-6 mb-8">
-            {/* Farmer Card */}
-            <div
-              className="bg-gradient-to-br from-yellow-200 to-orange-100 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+          <div className="space-y-6 mb-8">
+            <motion.div
+              className="bg-gradient-to-br from-yellow-100 to-yellow-200 p-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
               onClick={handleFarmerClick}
+              variants={cardVariants}
+              whileHover="hover"
+              whileTap="tap"
+              role="button"
+              aria-label="Join as a Farmer"
             >
               <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-10 h-10 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
-                  </svg>
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-yellow-400 rounded-full flex items-center justify-center">
+                  <Tractor className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800">I’m a Farmer</h3>
-                  <p className="text-gray-600 text-sm">For those who grow the goodness</p>
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-800">I’m a Farmer</h3>
+                  <p className="text-gray-600 text-xs sm:text-sm">Grow, sell, and connect with buyers</p>
                 </div>
               </div>
-            </div>
-
-            {/* Foodie Card */}
-            <div
-              className="bg-gradient-to-br from-green-200 to-lime-100 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+            </motion.div>
+            <motion.div
+              className="bg-gradient-to-br from-green-100 to-green-200 p-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
               onClick={handleFoodieClick}
+              variants={cardVariants}
+              whileHover="hover"
+              whileTap="tap"
+              role="button"
+              aria-label="Join as a Foodie"
             >
               <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 bg-green-400 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-10 h-10 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
-                  </svg>
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-400 rounded-full flex items-center justify-center">
+                  <Utensils className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800">I’m a Foodie</h3>
-                  <p className="text-gray-600 text-sm">For those who savor the goodness</p>
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-800">I’m a Foodie</h3>
+                  <p className="text-gray-600 text-xs sm:text-sm">Savor fresh, local produce</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Cancel Button */}
-          <button
-            className="splash-button w-full bg-red-500 text-white px-6 py-3 rounded-xl font-medium text-lg hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-md"
+          <motion.button
+            className="w-full bg-transparent border-2 border-green-300 text-green-300 px-6 py-3 rounded-lg font-semibold text-base sm:text-lg hover:bg-green-300 hover:text-green-900 transition-all duration-300"
             onClick={handleCancel}
+            variants={cardVariants}
+            whileHover="hover"
+            whileTap="tap"
+            aria-label="Cancel and return to home"
           >
             Cancel
-          </button>
-
-          {/* Decorative Elements */}
-          <div className="absolute top-6 left-6 text-green-600 text-xs opacity-50 animate-pulse">
-            5:23 PM WAT, Jul 31, 2025
-          </div>
-          <div className="absolute bottom-6 right-6 flex space-x-2">
-            <span className="w-2 h-2 bg-gray-300 rounded-full animate-pulse"></span>
-            <span className="w-2 h-2 bg-gray-300 rounded-full animate-pulse delay-200"></span>
-            <span className="w-2 h-2 bg-gray-300 rounded-full animate-pulse delay-400"></span>
-          </div>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
-    </div>
+    </section>
   );
 };
 

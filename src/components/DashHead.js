@@ -116,38 +116,42 @@ const DashHead = () => {
           >
             {currentTime} EDT, {currentDate}
           </motion.div>
-          <motion.button
-            className="text-white hover:text-green-300 relative"
-            whileHover={{ scale: 1.3, rotate: 10 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <ShoppingCart className="w-5 h-5" />
-            <motion.div
-              className="absolute -top-8 right-0 bg-green-600 text-white text-xs rounded px-2 py-1 shadow-md"
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 0 }}
-              whileHover={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
+          <Link to="/cart">
+            <motion.button
+              className="text-white hover:text-green-300 relative"
+              whileHover={{ scale: 1.3, rotate: 10 }}
+              whileTap={{ scale: 0.9 }}
             >
-              Cart
-            </motion.div>
-          </motion.button>
-          <motion.button
-            className="text-white hover:text-green-300 relative"
-            whileHover={{ scale: 1.3, rotate: 10 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <User className="w-5 h-5" />
-            <motion.div
-              className="absolute -top-8 right-0 bg-green-600 text-white text-xs rounded px-2 py-1 shadow-md"
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 0 }}
-              whileHover={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
+              <ShoppingCart className="w-5 h-5" />
+              <motion.div
+                className="absolute -top-8 right-0 bg-green-600 text-white text-xs rounded px-2 py-1 shadow-md"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 0 }}
+                whileHover={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                Cart
+              </motion.div>
+            </motion.button>
+          </Link>
+          <Link to="/profile">
+            <motion.button
+              className="text-white hover:text-green-300 relative"
+              whileHover={{ scale: 1.3, rotate: 10 }}
+              whileTap={{ scale: 0.9 }}
             >
-              Profile
-            </motion.div>
-          </motion.button>
+              <User className="w-5 h-5" />
+              <motion.div
+                className="absolute -top-8 right-0 bg-green-600 text-white text-xs rounded px-2 py-1 shadow-md"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 0 }}
+                whileHover={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                Profile
+              </motion.div>
+            </motion.button>
+          </Link>
 
           {/* Mobile Menu Toggle */}
           <motion.button
