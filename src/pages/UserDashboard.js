@@ -149,7 +149,7 @@ const UserDashboard = () => {
           transition={{ duration: 1 }}
         >
           <DashHead stats={stats} />
-          <UserHead
+          <UserHead className="mt-30"
             user={user}
             location={user?.location || 'Unknown'}
             balance={user?.walletBalance || 0}
