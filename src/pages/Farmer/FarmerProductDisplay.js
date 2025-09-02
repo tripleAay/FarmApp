@@ -18,6 +18,7 @@ function FarmerProductDisplay() {
         `http://localhost:5000/api/products/farmer/${farmerId}?page=${pageNum}&limit=5`
       );
       setProducts(response.data.products || []);
+
     } catch (error) {
       console.error(error);
       toast.error('Failed to load products');

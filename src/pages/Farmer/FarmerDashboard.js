@@ -121,9 +121,8 @@ const FarmerDashboard = () => {
       <div className="flex min-h-screen">
         {/* Sidebar */}
         <aside
-          className={`fixed md:static inset-y-0 left-0 z-50 w-64 bg-green-800 text-white p-6 transform ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg`}
+          className={`fixed md:static inset-y-0 left-0 z-50 w-64 bg-green-800 text-white p-6 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } md:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg`}
         >
           <div className="flex items-center justify-between mb-6">
             <Link to="/" className="flex items-center gap-3">
@@ -271,22 +270,21 @@ const FarmerDashboard = () => {
                         <span>#{order.orderId?.slice(-5) || "N/A"}</span>
                         <span className="truncate max-w-[120px] sm:max-w-[200px]">{order.productName || "N/A"}</span>
                         <span
-                          className={`px-2 py-1 rounded-full text-xs sm:text-sm ${
-                            order.status === "Pending"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : order.status === "Completed"
+                          className={`px-2 py-1 rounded-full text-xs sm:text-sm ${order.status === "Pending"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : order.status === "Completed"
                               ? "bg-green-100 text-green-800"
                               : "bg-gray-100 text-gray-800"
-                          }`}
+                            }`}
                         >
                           {order.status || "Unknown"}
                         </span>
                         <span>
                           {order.date
                             ? new Date(order.date).toLocaleString("en-GB", {
-                                month: "short",
-                                day: "numeric",
-                              })
+                              month: "short",
+                              day: "numeric",
+                            })
                             : "N/A"}
                         </span>
                       </motion.div>
