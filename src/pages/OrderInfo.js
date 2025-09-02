@@ -19,6 +19,7 @@ const OrderInfo = () => {
             headers: { Authorization: `Bearer ${token}` },
         });
         const result = await response.json();
+        console.log(response.order)
         if (!response.ok) throw new Error(result.error || 'Failed to fetch order info');
         return result.order;
     };

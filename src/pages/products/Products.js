@@ -107,7 +107,7 @@ const ProductDetails = () => {
         <nav className="flex items-center text-sm text-gray-600 mb-6" aria-label="Breadcrumb">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center text-gray-700 hover:text-blue-600 transition"
+            className="flex items-center text-[#166534] hover:text-blue-600 transition"
             aria-label="Go back"
           >
             <ChevronLeft className="w-5 h-5 mr-1" /> Back
@@ -139,9 +139,8 @@ const ProductDetails = () => {
                       key={index}
                       src={img || "https://via.placeholder.com/100"}
                       alt={`Thumbnail ${index + 1}`}
-                      className={`w-20 h-20 object-cover rounded-lg border cursor-pointer transition-all duration-200 ${
-                        activeImage === img ? "border-blue-500 ring-2 ring-blue-300" : "border-gray-200"
-                      }`}
+                      className={`w-20 h-20 object-cover rounded-lg border cursor-pointer transition-all duration-200 ${activeImage === img ? "border-blue-500 ring-2 ring-blue-300" : "border-gray-200"
+                        }`}
                       onClick={() => handleImageClick(img)}
                       role="button"
                       tabIndex={0}
@@ -172,9 +171,8 @@ const ProductDetails = () => {
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-5 h-5 ${
-                          i < Math.round(product.rating || 0) ? "text-yellow-400 fill-current" : "text-gray-300"
-                        }`}
+                        className={`w-5 h-5 ${i < Math.round(product.rating || 0) ? "text-yellow-400 fill-current" : "text-gray-300"
+                          }`}
                       />
                     ))}
                   </div>
@@ -245,11 +243,10 @@ const ProductDetails = () => {
                 <button
                   onClick={handleAddToCart}
                   disabled={isInCart || updating || product.stock === 0}
-                  className={`w-full py-3 rounded-lg text-lg font-semibold transition duration-300 ${
-                    isInCart || product.stock === 0
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-blue-600 hover:bg-blue-700 text-white"
-                  }`}
+                  className={`w-full py-3 rounded-lg text-lg font-semibold transition duration-300 ${isInCart || product.stock === 0
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-[#166534] hover:bg-[#2ba65a] text-white"
+                    }`}
                   aria-label={isInCart ? "Product already in cart" : "Add product to cart"}
                 >
                   {isInCart ? "Added to Cart" : updating ? "Adding..." : "Add to Cart"}
@@ -283,9 +280,8 @@ const ProductDetails = () => {
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`w-4 h-4 ${
-                              i < review.rating ? "text-yellow-400 fill-current" : "text-gray-300"
-                            }`}
+                            className={`w-4 h-4 ${i < review.rating ? "text-yellow-400 fill-current" : "text-gray-300"
+                              }`}
                           />
                         ))}
                       </div>
@@ -298,7 +294,7 @@ const ProductDetails = () => {
               <p className="text-gray-500">No reviews yet. Be the first to review this product!</p>
             )}
             <button
-              className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+              className="mt-4 text-[#166534] hover:text-[#319658] font-medium"
               onClick={() => navigate(`/product/${id}/reviews`)}
             >
               Write a Review
@@ -320,7 +316,7 @@ const ProductDetails = () => {
                     onClick={() => navigate(`/product/${index + 1}`)}
                   >
                     <img
-                      src="https://via.placeholder.com/150"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1hyLmBOdkNwILGTv3fAHKYk05fKBHTE61dg&s"
                       alt="Related product"
                       className="w-full h-40 object-cover rounded-lg mb-4"
                     />
