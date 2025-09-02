@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, ShoppingCart } from "lucide-react";
+import axios from 'axios';
+
 
 function FeaturedProducts() {
   const [products, setProducts] = useState([]);
@@ -23,13 +25,28 @@ function FeaturedProducts() {
   }, [userId]);
 
   // Simulate add to cart with loading spinner
-  const handleAddToCart = (product) => {
-    setLoadingId(product._id);
-    setTimeout(() => {
-      setLoadingId(null);
-      alert(`${product.name} has been added to your cart! ✅`);
-    }, 1500);
+  const handleAddToCart = async (product) => {
+    try {
+      setLoadingId(product._id);
+
+      const res = await axios.post(
+        `http://localhost:5000/api/products/addtocart/${userId}/${product._id}`,
+        {
+          quantity: 1,
+
+        }
+      );
+
+      if (res.data.success) {
+        alert(`${product.name} has been added to your cart! ✅`);
+      }
+    } catch (err) {
+      console.error("Add to cart error:", err);
+    } finally {
+      setLoadingId(null); // Always reset, success or fail
+    }
   };
+
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-100 py-12">
@@ -59,11 +76,10 @@ function FeaturedProducts() {
                   className="w-full h-full object-cover transform group-hover:scale-110 transition duration-500"
                 />
                 <span
-                  className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full shadow-md ${
-                    product.availability === 'Available Now'
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-yellow-100 text-yellow-700'
-                  }`}
+                  className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full shadow-md ${product.availability === 'Available Now'
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-yellow-100 text-yellow-700'
+                    }`}
                 >
                   {product.availability || "In Stock"}
                 </span>
@@ -97,7 +113,7 @@ function FeaturedProducts() {
 
                   <button
                     onClick={() => handleAddToCart(product)}
-                    className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-xl shadow transition"
+                    className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-xl shadow transition px-2"
                   >
                     {loadingId === product._id ? (
                       <Loader2 className="w-4 h-4 animate-spin" />

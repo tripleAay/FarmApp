@@ -72,8 +72,6 @@ const ProductDetails = () => {
       if (res.data.success) {
         toast.success("✅ Added to cart!");
         ifInCart();
-      } else {
-        toast.error("⚠️ Could not add to cart: " + (res.data.message || "Unknown error"));
       }
     } catch (err) {
       console.error("Add to cart error:", err);

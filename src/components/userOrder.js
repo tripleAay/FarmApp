@@ -15,6 +15,8 @@ function UserOrder() {
         `http://localhost:5000/api/products/order/${userId}`
       );
       setOrderItems(res.data.orders || []);
+      console.log(res.data.orders);
+
     } catch (err) {
       console.error("Error fetching orders:", err);
     } finally {
@@ -56,13 +58,12 @@ function UserOrder() {
                   #{index + 1}
                 </span>
                 <span
-                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium ${
-                    order.status === "Delivered"
+                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium ${order.status === "Delivered"
                       ? "bg-green-100 text-green-700"
                       : order.status === "Pending"
-                      ? "bg-yellow-100 text-yellow-700"
-                      : "bg-blue-100 text-blue-700"
-                  }`}
+                        ? "bg-yellow-100 text-yellow-700"
+                        : "bg-blue-100 text-blue-700"
+                    }`}
                 >
                   {order.status}
                 </span>
