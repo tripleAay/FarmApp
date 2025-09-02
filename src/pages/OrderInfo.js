@@ -19,9 +19,11 @@ const OrderInfo = () => {
             headers: { Authorization: `Bearer ${token}` },
         });
         const result = await response.json();
-        console.log(response.order)
         if (!response.ok) throw new Error(result.error || 'Failed to fetch order info');
+
         return result.order;
+
+
     };
 
     const { data: order, isLoading, error, refetch } = useQuery({
@@ -69,7 +71,7 @@ const OrderInfo = () => {
     }
 
     const manualBalance = calculateBalance(order.products);
-
+    console.log(order)
     return (
         <div className="min-h-screen bg-green-50 p-4 sm:p-6 md:p-8">
             {/* Header */}
@@ -98,7 +100,11 @@ const OrderInfo = () => {
                     {order.products.map((item, idx) => (
                         <div key={idx} className="flex items-center gap-4 border-b pb-4 last:border-none last:pb-0">
                             <img
-                                src={item.thumbnail}
+                                src={
+                                    item.thumbnail.startsWith("uploads")
+                                        ? `http://localhost:5000/${item.thumbnail}`
+                                        : item.thumbnail
+                                }
                                 alt={item.productName}
                                 className="w-16 h-16 object-cover rounded-md"
                             />
