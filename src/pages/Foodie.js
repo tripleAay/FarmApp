@@ -73,7 +73,7 @@ const FoodieSignup = () => {
         }
       });
 
-      const response = await fetch("http://localhost:5000/api/buyersignup", {
+      const response = await fetch("https://farmapp-backend-auwd.onrender.com/api/buyersignup", {
         method: "POST",
         body: formDataToSend,
       });

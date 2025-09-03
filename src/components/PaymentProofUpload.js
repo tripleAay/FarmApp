@@ -28,7 +28,7 @@ export default function PaymentProofUpload({ orderId }) {
         formData.append("paymentImage", file);
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", `http://localhost:5000/api/products/upload-payment-proof/${orderId}`, true);
+        xhr.open("POST", `https://farmapp-backend-auwd.onrender.com/api/products/upload-payment-proof/${orderId}`, true);
 
         xhr.upload.onprogress = (event) => {
             if (event.lengthComputable) {

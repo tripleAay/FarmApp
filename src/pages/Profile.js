@@ -23,7 +23,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/farmers/buyer/${buyerId}`
+          `https://farmapp-backend-auwd.onrender.com/api/farmers/buyer/${buyerId}`
         );
         if (res.data && res.data.foundBuyer) {
           setFormData(res.data.foundBuyer);
@@ -61,7 +61,7 @@ const Profile = () => {
       if (file) data.append("profilePicture", file);
 
       const res = await axios.put(
-        `http://localhost:5000/api/farmers/profile/${buyerId}`,
+        `https://farmapp-backend-auwd.onrender.com/api/farmers/profile/${buyerId}`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -194,11 +194,10 @@ const Profile = () => {
               <button
                 type="submit"
                 disabled={saving}
-                className={`px-6 py-2 text-white rounded-xl shadow transition ${
-                  saving
+                className={`px-6 py-2 text-white rounded-xl shadow transition ${saving
                     ? "bg-green-400 cursor-not-allowed"
                     : "bg-green-600 hover:bg-green-700"
-                }`}
+                  }`}
               >
                 {saving ? "Saving..." : "Save Changes"}
               </button>

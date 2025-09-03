@@ -109,7 +109,7 @@ const FarmerSignup = () => {
         }
       });
 
-      const response = await fetch("http://localhost:5000/api/farmersignup", {
+      const response = await fetch("https://farmapp-backend-auwd.onrender.com/api/farmersignup", {
         method: "POST",
         body: formDataToSend,
       });

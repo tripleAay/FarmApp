@@ -76,7 +76,7 @@ const FarmerAddProduct = () => {
       formData.append('thumbnail', values.thumbnail);
       values.images.forEach((file) => formData.append('images', file));
 
-      const res = await axios.post('http://localhost:5000/api/products', formData, {
+      const res = await axios.post('https://farmapp-backend-auwd.onrender.com/api/products', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 

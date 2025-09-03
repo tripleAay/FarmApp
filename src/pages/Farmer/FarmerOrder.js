@@ -13,7 +13,7 @@ function FarmerOrder() {
   const fetchOrder = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/farmers/orders/${id}`
+        `https://farmapp-backend-auwd.onrender.com/api/farmers/orders/${id}`
       );
       setRecentOrders(response.data.orders || []);
     } catch (error) {

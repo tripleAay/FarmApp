@@ -13,7 +13,7 @@ const Header = () => {
     // Example: Fetch cart count from backend
     // const fetchCartCount = async () => {
     //   try {
-    //     const res = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+    //     const res = await axios.get(`https://farmapp-backend-auwd.onrender.com/api/cart/${userId}`);
     //     setCartCount(res.data.items.length);
     //   } catch (error) {
     //     console.error("Failed to fetch cart count:", error);

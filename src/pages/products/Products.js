@@ -20,7 +20,7 @@ const ProductDetails = () => {
   // Fetch product details
   const fetchProduct = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/products/products/${id}`);
+      const res = await axios.get(`https://farmapp-backend-auwd.onrender.com/api/products/products/${id}`);
       setProduct(res.data);
       setActiveImage(res.data.thumbnail || "https://via.placeholder.com/600");
       setSelectedSize(res.data.sizes?.[0] || "");
@@ -36,7 +36,7 @@ const ProductDetails = () => {
   const ifInCart = async () => {
     if (!userId) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/products/check-in-cart/${userId}/${id}`);
+      const res = await axios.get(`https://farmapp-backend-auwd.onrender.com/api/products/check-in-cart/${userId}/${id}`);
       setIsInCart(res.data.inCart);
     } catch (error) {
       console.error("Check cart error:", error);
@@ -65,7 +65,7 @@ const ProductDetails = () => {
     }
     try {
       setUpdating(true);
-      const res = await axios.post(`http://localhost:5000/api/products/addtocart/${userId}/${id}`, {
+      const res = await axios.post(`https://farmapp-backend-auwd.onrender.com/api/products/addtocart/${userId}/${id}`, {
         quantity,
         size: selectedSize,
       });
