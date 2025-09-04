@@ -216,11 +216,13 @@ const ProductDetails = () => {
                   )}
                 </div>
                 <div className="text-sm text-gray-600">
-                  {product.stock > 0 ? (
+                  {/* {product.stock > 0 ? (
                     <span className="text-green-600">In Stock ({product.stock} available)</span>
                   ) : (
                     <span className="text-red-600">Out of Stock</span>
-                  )}
+                  )} */}
+
+                  <span className="text-green-600">In Stock </span>
                 </div>
 
                 {/* Size Selector */}
