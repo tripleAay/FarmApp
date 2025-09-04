@@ -15,7 +15,6 @@ function UserOrder() {
         `https://farmapp-backend-auwd.onrender.com/api/products/order/${userId}`
       );
       setOrderItems(res.data.orders || []);
-      console.log(res.data.orders);
 
     } catch (err) {
       console.error("Error fetching orders:", err);

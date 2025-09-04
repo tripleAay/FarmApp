@@ -71,7 +71,6 @@ const OrderInfo = () => {
     }
 
     const manualBalance = calculateBalance(order.products);
-    console.log(order)
     return (
         <div className="min-h-screen bg-green-50 p-4 sm:p-6 md:p-8">
             {/* Header */}

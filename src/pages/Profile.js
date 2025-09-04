@@ -195,8 +195,8 @@ const Profile = () => {
                 type="submit"
                 disabled={saving}
                 className={`px-6 py-2 text-white rounded-xl shadow transition ${saving
-                    ? "bg-green-400 cursor-not-allowed"
-                    : "bg-green-600 hover:bg-green-700"
+                  ? "bg-green-400 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700"
                   }`}
               >
                 {saving ? "Saving..." : "Save Changes"}
