@@ -24,6 +24,7 @@ const ProductDetails = () => {
       setProduct(res.data);
       setActiveImage(res.data.thumbnail || "https://via.placeholder.com/600");
       setSelectedSize(res.data.sizes?.[0] || "");
+      console.log(res.data.category)
     } catch (error) {
       console.error("Fetch product error:", error);
       toast.error("Failed to load product details");
@@ -31,6 +32,31 @@ const ProductDetails = () => {
       setProductLoading(false);
     }
   };
+
+  const [similarProducts, setSimilarProducts] = useState([]);
+  const [loadingSimilar, setLoadingSimilar] = useState(true);
+
+  const fetchSimilarProducts = async (category, excludeId) => {
+    try {
+      const res = await axios.get(
+        `https://farmapp-backend-auwd.onrender.com/api/products/similar`,
+        {
+          params: {
+            category,
+            excludeId,
+            limit: 6, // optional: number of products to fetch
+          },
+        }
+      );
+      setSimilarProducts(res.data.similarProducts || []);
+    } catch (error) {
+      console.error("Fetch similar products error:", error);
+      toast.error("Failed to load similar products");
+    } finally {
+      setLoadingSimilar(false);
+    }
+  };
+
 
   // Check if product is in cart
   const ifInCart = async () => {
@@ -49,6 +75,7 @@ const ProductDetails = () => {
   useEffect(() => {
     fetchProduct();
     ifInCart();
+    fetchSimilarProducts();
   }, [userId, id]);
 
   // Handle Add to Cart
