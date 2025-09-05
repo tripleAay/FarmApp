@@ -29,7 +29,7 @@ const fetchUser = async ({ queryKey }) => {
 const fetchStats = async () => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Not authenticated');
-  const response = await fetch('http://localhost:5000/api/stats', {
+  const response = await fetch('https://farmapp-backend-auwd.onrender.com/api/stats', {
     headers: { Authorization: `Bearer ${token}` },
   });
   const result = await response.json();
@@ -40,7 +40,7 @@ const fetchStats = async () => {
 const fetchFeaturedProducts = async () => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Not authenticated');
-  const response = await fetch('http://localhost:5000/api/products/user', {
+  const response = await fetch('https://farmapp-backend-auwd.onrender.com/api/products/user', {
     headers: { Authorization: `Bearer ${token}` },
   });
   const result = await response.json();
@@ -51,7 +51,7 @@ const fetchFeaturedProducts = async () => {
 const fetchOrders = async () => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Not authenticated');
-  const response = await fetch('http://localhost:5000/api/orders', {
+  const response = await fetch('https://farmapp-backend-auwd.onrender.com/api/orders', {
     headers: { Authorization: `Bearer ${token}` },
   });
   const result = await response.json();

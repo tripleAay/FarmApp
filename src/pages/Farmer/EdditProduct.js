@@ -46,7 +46,7 @@ const EditProduct = () => {
     // Fetch product details
     const fetchProduct = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/api/products/products/${id}`);
+            const res = await axios.get(`https://farmapp-backend-auwd.onrender.com/api/products/products/${id}`);
             const product = res.data;
 
             setFormData({
@@ -124,7 +124,7 @@ const EditProduct = () => {
             }
 
             const res = await axios.post(
-                `http://localhost:5000/api/products/updateproduct/${farmerId}/${id}`,
+                `https://farmapp-backend-auwd.onrender.com/api/products/updateproduct/${farmerId}/${id}`,
                 form,
                 { headers: { "Content-Type": "multipart/form-data" } }
             );

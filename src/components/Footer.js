@@ -19,7 +19,7 @@ const Footer = () => {
     setSubmitting(true);
     try {
       // Replace with actual API call
-      // await axios.post("http://localhost:5000/api/newsletter/subscribe", { email });
+      // await axios.post("https://farmapp-backend-auwd.onrender.com/api/newsletter/subscribe", { email });
       toast.success("🎉 Subscribed to Farm Marketplace newsletter!");
       setEmail("");
     } catch (error) {

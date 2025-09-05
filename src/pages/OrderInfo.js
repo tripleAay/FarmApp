@@ -15,7 +15,7 @@ const OrderInfo = () => {
     const fetchOrderById = async (id) => {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('Not authenticated');
-        const response = await fetch(`http://localhost:5000/api/products/orderinfo/${id}`, {
+        const response = await fetch(`https://farmapp-backend-auwd.onrender.com/api/products/orderinfo/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         const result = await response.json();
@@ -71,7 +71,6 @@ const OrderInfo = () => {
     }
 
     const manualBalance = calculateBalance(order.products);
-    console.log(order)
     return (
         <div className="min-h-screen bg-green-50 p-4 sm:p-6 md:p-8">
             {/* Header */}
@@ -102,7 +101,7 @@ const OrderInfo = () => {
                             <img
                                 src={
                                     item.thumbnail.startsWith("uploads")
-                                        ? `http://localhost:5000/${item.thumbnail}`
+                                        ? `https://farmapp-backend-auwd.onrender.com/${item.thumbnail}`
                                         : item.thumbnail
                                 }
                                 alt={item.productName}
@@ -147,7 +146,7 @@ const OrderInfo = () => {
                 <div className="bg-white shadow-lg rounded-xl p-4 sm:p-6 mb-6">
                     <h2 className="text-xl font-bold text-green-700 mb-4">Payment Proof</h2>
                     <img
-                        src={`http://localhost:5000/${order.paymentImage.replace(/\\/g, '/')}`}
+                        src={`https://farmapp-backend-auwd.onrender.com/${order.paymentImage.replace(/\\/g, '/')}`}
                         alt="Payment Proof" className="w-full max-w-md rounded-lg border" />
                 </div>
             ) : (

@@ -15,7 +15,7 @@ function Cart() {
 
   const fetchCart = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/products/cart/${userId}`);
+      const res = await axios.get(`https://farmapp-backend-auwd.onrender.com/api/products/cart/${userId}`);
       setCartItems(res.data.products || []);
     } catch (err) {
       console.error("Error fetching cart:", err);
@@ -27,7 +27,7 @@ function Cart() {
   const placeOrder = async () => {
     setPlacingOrder(true)
     try {
-      const res = await axios.post(`http://localhost:5000/api/products/place-order/${userId}`);
+      const res = await axios.post(`https://farmapp-backend-auwd.onrender.com/api/products/place-order/${userId}`);
       fetchCart();
       toast.success(res.data.message)
     } catch (err) {
@@ -48,7 +48,7 @@ function Cart() {
   const handleIncrement = async (productId) => {
     const action = "add";
     try {
-      await axios.patch(`http://localhost:5000/api/products/cart/update/${userId}/${productId}/${action}`);
+      await axios.patch(`https://farmapp-backend-auwd.onrender.com/api/products/cart/update/${userId}/${productId}/${action}`);
       setCartItems((prevItems) =>
         prevItems.map((item) =>
           item._id === productId ? { ...item, quantity: item.quantity + 1 } : item
@@ -63,7 +63,7 @@ function Cart() {
   const handleDecrement = async (productId) => {
     const action = "remove";
     try {
-      await axios.patch(`http://localhost:5000/api/products/cart/update/${userId}/${productId}/${action}`);
+      await axios.patch(`https://farmapp-backend-auwd.onrender.com/api/products/cart/update/${userId}/${productId}/${action}`);
       setCartItems((prevItems) =>
         prevItems.map((item) =>
           item._id === productId && item.quantity > 1
@@ -80,7 +80,7 @@ function Cart() {
   // Handle item removal
   const handleRemove = async (productId) => {
     try {
-      await axios.patch(`http://localhost:5000/api/products/cart/remove/${userId}/${productId}`);
+      await axios.patch(`https://farmapp-backend-auwd.onrender.com/api/products/cart/remove/${userId}/${productId}`);
 
       // Update state locally
       setCartItems(prevItems => prevItems.filter(item => item.productId !== productId));

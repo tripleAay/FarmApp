@@ -32,8 +32,8 @@ const FarmerDashboard = () => {
 
     try {
       const [statsResponse, farmerResponse] = await Promise.all([
-        axios.get(`http://localhost:5000/api/farmers/stats/${id}`),
-        axios.get(`http://localhost:5000/api/farmers/${id}`),
+        axios.get(`https://farmapp-backend-auwd.onrender.com/api/farmers/stats/${id}`),
+        axios.get(`https://farmapp-backend-auwd.onrender.com/api/farmers/${id}`),
       ]);
 
       setProducts(statsResponse.data.stats || {

@@ -11,7 +11,7 @@ function HotProducts() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/products/user');
+        const res = await fetch('https://farmapp-backend-auwd.onrender.com/api/products/user');
         const data = await res.json();
         const hotProducts = (data.products || []).slice(0, 8);
         setProducts(hotProducts);

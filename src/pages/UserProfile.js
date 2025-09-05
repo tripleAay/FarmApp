@@ -12,7 +12,7 @@ const UserProfile = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/farmers/buyer/${buyerId}`);
+      const response = await axios.get(`https://farmapp-backend-auwd.onrender.com/api/farmers/buyer/${buyerId}`);
       if (response.data) {
         setUser(response.data.foundBuyer);
       }

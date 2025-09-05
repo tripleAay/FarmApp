@@ -9,6 +9,7 @@ const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const [category, setCategory] = useState(null);
   const [productLoading, setProductLoading] = useState(true);
   const [cartLoading, setCartLoading] = useState(true);
   const [isInCart, setIsInCart] = useState(false);
@@ -20,10 +21,13 @@ const ProductDetails = () => {
   // Fetch product details
   const fetchProduct = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/products/products/${id}`);
+      const res = await axios.get(`https://farmapp-backend-auwd.onrender.com/api/products/products/${id}`);
       setProduct(res.data);
       setActiveImage(res.data.thumbnail || "https://via.placeholder.com/600");
       setSelectedSize(res.data.sizes?.[0] || "");
+      setCategory(res.data.category)
+      fetchSimilarProducts(res.data.category, res.data._id);
+
     } catch (error) {
       console.error("Fetch product error:", error);
       toast.error("Failed to load product details");
@@ -32,11 +36,36 @@ const ProductDetails = () => {
     }
   };
 
+  const [similarProducts, setSimilarProducts] = useState([]);
+  const [loadingSimilar, setLoadingSimilar] = useState(true);
+
+  const fetchSimilarProducts = async (category, excludeId) => {
+    try {
+      const res = await axios.get(
+        `https://farmapp-backend-auwd.onrender.com/api/products/similar`,
+        {
+          params: {
+            category,
+            excludeId,
+            limit: 6, // optional: number of products to fetch
+          },
+        }
+      );
+      setSimilarProducts(res.data.similarProducts || []);
+    } catch (error) {
+      console.error("Fetch similar products error:", error);
+      toast.error("Failed to load similar products");
+    } finally {
+      setLoadingSimilar(false);
+    }
+  };
+
+
   // Check if product is in cart
   const ifInCart = async () => {
     if (!userId) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/products/check-in-cart/${userId}/${id}`);
+      const res = await axios.get(`https://farmapp-backend-auwd.onrender.com/api/products/check-in-cart/${userId}/${id}`);
       setIsInCart(res.data.inCart);
     } catch (error) {
       console.error("Check cart error:", error);
@@ -49,6 +78,7 @@ const ProductDetails = () => {
   useEffect(() => {
     fetchProduct();
     ifInCart();
+
   }, [userId, id]);
 
   // Handle Add to Cart
@@ -65,7 +95,7 @@ const ProductDetails = () => {
     }
     try {
       setUpdating(true);
-      const res = await axios.post(`http://localhost:5000/api/products/addtocart/${userId}/${id}`, {
+      const res = await axios.post(`https://farmapp-backend-auwd.onrender.com/api/products/addtocart/${userId}/${id}`, {
         quantity,
         size: selectedSize,
       });
@@ -186,11 +216,13 @@ const ProductDetails = () => {
                   )}
                 </div>
                 <div className="text-sm text-gray-600">
-                  {product.stock > 0 ? (
+                  {/* {product.stock > 0 ? (
                     <span className="text-green-600">In Stock ({product.stock} available)</span>
                   ) : (
                     <span className="text-red-600">Out of Stock</span>
-                  )}
+                  )} */}
+
+                  <span className="text-green-600">In Stock </span>
                 </div>
 
                 {/* Size Selector */}
@@ -303,27 +335,33 @@ const ProductDetails = () => {
         {product && !isLoading && (
           <div className="mt-12">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Related Products</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {Array(4)
-                .fill()
-                .map((_, index) => (
+
+            {loadingSimilar ? (
+              <p className="text-gray-500">Loading related products...</p>
+            ) : similarProducts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {similarProducts.map((item) => (
                   <div
-                    key={index}
+                    key={item._id}
                     className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition cursor-pointer"
-                    onClick={() => navigate(`/product/${index + 1}`)}
+                    onClick={() => navigate(`/product/${item._id}`)}
                   >
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1hyLmBOdkNwILGTv3fAHKYk05fKBHTE61dg&s"
-                      alt="Related product"
+                      src={item.thumbnail || "https://via.placeholder.com/300"}
+                      alt={item.name}
                       className="w-full h-40 object-cover rounded-lg mb-4"
                     />
-                    <h3 className="text-lg font-semibold text-gray-900">Related Product {index + 1}</h3>
-                    <p className="text-gray-600">$29.99</p>
+                    <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
+                    <p className="text-gray-600">${item.price}</p>
                   </div>
                 ))}
-            </div>
+              </div>
+            ) : (
+              <p className="text-gray-500">No related products found.</p>
+            )}
           </div>
         )}
+
       </div>
     </div>
   );

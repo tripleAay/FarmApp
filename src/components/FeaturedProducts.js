@@ -13,7 +13,7 @@ function FeaturedProducts() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/products/user");
+        const res = await fetch("https://farmapp-backend-auwd.onrender.com/api/products/user");
         const data = await res.json();
         setProducts(data.products || []);
       } catch (error) {
@@ -30,7 +30,7 @@ function FeaturedProducts() {
       setLoadingId(product._id);
 
       const res = await axios.post(
-        `http://localhost:5000/api/products/addtocart/${userId}/${product._id}`,
+        `https://farmapp-backend-auwd.onrender.com/api/products/addtocart/${userId}/${product._id}`,
         {
           quantity: 1,
 

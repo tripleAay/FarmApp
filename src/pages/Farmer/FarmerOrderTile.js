@@ -40,7 +40,7 @@ function FarmerOrderTile({ orders }) {
         status: order.status
       }));
 
-      const res = await fetch("http://localhost:5000/api/farmers/orders/status", {
+      const res = await fetch("https://farmapp-backend-auwd.onrender.com/api/farmers/orders/status", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ updates })

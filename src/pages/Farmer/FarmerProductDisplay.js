@@ -15,7 +15,7 @@ function FarmerProductDisplay() {
   const fetchProducts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/products/farmer/${farmerId}?page=${pageNum}&limit=5`
+        `https://farmapp-backend-auwd.onrender.com/api/products/farmer/${farmerId}?page=${pageNum}&limit=5`
       );
       setProducts(response.data.products || []);
 
@@ -30,7 +30,7 @@ function FarmerProductDisplay() {
   const handleDelete = async (productId) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
     try {
-      const response = await axios.delete(`http://localhost:5000/api/products/delete/${farmerId}/${productId}`);
+      const response = await axios.delete(`https://farmapp-backend-auwd.onrender.com/api/products/delete/${farmerId}/${productId}`);
       toast.success(response.data?.message);
       fetchProducts(); // Refresh list
     } catch (error) {
