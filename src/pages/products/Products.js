@@ -253,7 +253,6 @@ const ProductDetails = () => {
                 {/* Additional Info */}
                 <ul className="text-sm text-gray-600 space-y-2">
                   <li>✅ Premium Quality Product</li>
-                  <li>🚚 Free Shipping on Orders Over $50</li>
                   <li>🔄 30-Day Return Policy</li>
                   <li>💳 Secure Checkout</li>
                 </ul>

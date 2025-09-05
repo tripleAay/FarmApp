@@ -35,9 +35,9 @@ npm start
 
 🧑‍💻 Author
 Adedokun Adeshina
-
 GitHub: @tripleAay
-
 Twitter: @aaytple
-
 LinkedIn: linkedin.com/in/tripleaay
+
+🧑‍💻 Author & Contributor 
+Dr. Kayode Abiodun Oladapo 

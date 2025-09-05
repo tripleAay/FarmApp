@@ -49,7 +49,7 @@ function FeaturedProducts() {
 
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-100 py-12">
+    <section className="min-h-screen  py-12">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-3">
